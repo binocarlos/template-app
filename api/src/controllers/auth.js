@@ -14,7 +14,7 @@ const AuthController = ({
       * search
     
   */
-  const list = (params) => 
+  const list = (params = {}) => 
     store.auth.list({
       search: params.search
     })
