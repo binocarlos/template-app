@@ -10,6 +10,7 @@
     "test": "tape test/**/*.test.js | tap-spec"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "bluebird": "^3.7.2",
     "body-parser": "^1.17.2",
     "connect-redis": "4.0.3",

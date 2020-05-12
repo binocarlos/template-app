@@ -1,26 +1,87 @@
+const fs = require('fs')
+const path = require('path')
 const tape = require('tape')
-const database = require('./database')
+const Knex = require('knex')
+const randomstring = require('randomstring')
 
 const Store = require('../src/store')
+const Controllers = require('../src/controllers')
 
-const TestHarness = (name, handler) => {
-  database.testSuiteWithDatabase(getConnection => {
-    const getStore = () => Store({
-      knex: getConnection(),
-    })
-    tape(name, async (t) => {
-      try {
-        await handler(t, {
-          getConnection,
-          getStore,
-        })
-      } catch(err) {
-        t.fail(err)
-        console.log(err.stack)
-      }
-      t.end()
-    })
+const MIGRATIONS_FOLDER = path.join(__dirname, '..', 'migrations')
+
+if(!fs.existsSync(MIGRATIONS_FOLDER)) {
+  console.error(`the migrations folder was not found: ${MIGRATIONS_FOLDER}`)
+  process.exit(1)
+}
+
+const getConnectionSettings = (databaseName) => {
+  return {
+    client: 'pg',
+    connection: {
+      host: process.env.POSTGRES_SERVICE_HOST || 'postgres',
+      port: 5432,
+      user: 'postgres',
+      password: 'postgres',
+      database: databaseName || 'postgres',
+    },
+    pool: {
+      min: 0,
+      max: 10,
+    }
+  }
+}
+
+const setupDatabase = async (options, context) => {
+  if(!options.database) return
+  const randomChars = randomstring.generate({
+    length: 16,
+    charset: 'alphabetic',
+    capitalization: 'lowercase',
+  })
+  const databaseName = `testdb${randomChars}`
+  const masterKnex = Knex(getConnectionSettings())
+  await masterKnex.raw(`create database ${databaseName}`)
+  const testKnex = Knex(getConnectionSettings(databaseName))
+  await testKnex.migrate.latest({
+    directory: MIGRATIONS_FOLDER,
+  })
+  await masterKnex.destroy()
+  context.databaseName = databaseName
+  context.knex = testKnex
+  context.store = Store({
+    knex: testKnex,
+  })
+  context.controllers = Controllers({
+    store: context.store,
   })
 }
 
-module.exports = TestHarness
+const destroyDatabase = async (options, context) => {
+  if(!options.database) return
+  if(!context.knex) return
+  await context.knex.destroy()
+  if(process.env.KEEP_DATABASE) return
+  const masterKnex = Knex(getConnectionSettings())
+  await masterKnex.raw(`drop database ${context.databaseName}`)
+  await masterKnex.destroy()
+}
+
+const testHarness = (name, handler, options = {
+  database: true,
+  web: false,
+}) => {
+  const context = {}
+  tape(name, async (t) => {
+    try {
+      await setupDatabase(options, context)
+      await handler(t, context)
+    } catch(err) {
+      t.fail(err)
+      console.log(err.stack)
+    }
+    await destroyDatabase(options, context)
+    t.end()
+  })
+}
+
+module.exports = testHarness

@@ -30,45 +30,36 @@ const getConnectionSettings = (databaseName) => {
 
 // get a fresh knex connection that is pointing to a new database
 // that has it's schema initialised
-const createTestKnex = (databaseName, done) => {
-  
+const createTestKnex = async (databaseName) => {
   const masterKnex = Knex(getConnectionSettings())
-
-  masterKnex
-    .raw(`create database ${databaseName}`)
-    .then(() => {
-      const testKnex = Knex(getConnectionSettings(databaseName))
-      testKnex.migrate.latest({
-        directory: MIGRATIONS_FOLDER,
-      })
-      .then(() => {
-        masterKnex.destroy()
-        done(null, testKnex)
-        return null
-      })
-      .catch(done)
-      return null
-    })
-    .catch(done)
+  await masterKnex.raw(`create database ${databaseName}`)
+  const testKnex = Knex(getConnectionSettings(databaseName))
+  await testKnex.migrate.latest({
+    directory: MIGRATIONS_FOLDER,
+  })
+  await masterKnex.destroy()
+  return testKnex
 }
 
-const destroyTestKnex = (databaseName, done) => {
+const destroyTestKnex = async (databaseName, done) => {
   const masterKnex = Knex(getConnectionSettings())
+  await masterKnex.raw(`drop database ${databaseName}`)
+  await masterKnex.destroy()
+}
 
-  masterKnex
-    .raw(`drop database ${databaseName}`)
-    .then(() => {
-      masterKnex.destroy()
-      done()
-      return null
-    })
-    .catch(done)
+const getDatabase = async () => {
+  const randomChars = randomstring.generate({
+    length: 16,
+    charset: 'alphabetic',
+    capitalization: 'lowercase',
+  })
+  const databaseName = `testdb${randomChars}`
 }
 
 // wrap a handler function with a test before that creates a database connection
 // pass the connection into the handler so it's tests can use it
 // destroy the database as the last test
-const testSuiteWithDatabase = (handler) => {
+const testSuiteWithDatabase = (name, handler) => {
   let databaseConnection = null
   const getDatabaseConnection = () => databaseConnection
 
@@ -79,7 +70,7 @@ const testSuiteWithDatabase = (handler) => {
   })
 
   const databaseName = `testdb${randomDatabaseName}`
-  tape('setup database', (t) => {
+  tape(`${name} setup database`, (t) => {
     createTestKnex(databaseName, (err, knex) => {
       t.notok(err, `there was no error`)
       databaseConnection = knex
@@ -89,7 +80,7 @@ const testSuiteWithDatabase = (handler) => {
 
   handler(getDatabaseConnection, getConnectionSettings(databaseName))
 
-  tape('teardown database', (t) => {
+  tape(`${name}: teardown database`, (t) => {
     databaseConnection
       .destroy()
       .then(() => {

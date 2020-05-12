@@ -1,12 +1,9 @@
 const harness = require('../harness')
 
-harness('database:sanity', async (t, {
-  getStore,
-  getConnection,
+harness('database:sanity no error', async (t, {
+  knex,
+  store,
 }) => {
-  const knex = getConnection()
-  const store = getStore()
-
   const databaseUsers = await knex
     .select()
     .from('useraccount')
