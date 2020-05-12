@@ -15,7 +15,7 @@ const AuthStore = ({
       * search
     
   */
-  const list = (params) => {
+  const list = (params = {}) => {
     const query = knex
       .select()
       .from('useraccount')

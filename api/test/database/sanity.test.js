@@ -1,19 +1,19 @@
-const database = require('../database')
-const asyncTest = require('../asyncTest')
+const harness = require('../harness')
 
-database.testSuiteWithDatabase(getConnection => {
+harness('database:sanity', async (t, {
+  getStore,
+  getConnection,
+}) => {
+  const knex = getConnection()
+  const store = getStore()
 
-  // const getStore = () => Store({
-  //   knex: getConnection(),
-  // })
+  const databaseUsers = await knex
+    .select()
+    .from('useraccount')
+  const storeUsers = await store.auth.list()
 
-  asyncTest('database:sanity', async (t) => {
-    const knex = getConnection()
-    const users = await knex
-      .select()
-      .from('useraccount')
-    t.equal(users.length, 0, `there are no users`)
-    t.ok(users instanceof Array, `the result is an array`)
-  })
+  t.equal(databaseUsers.length, 0, `there are no database users`)
+  t.ok(databaseUsers instanceof Array, `the database result is an array`)
+  t.equal(storeUsers.length, 0, `there are no store users`)
+  t.ok(storeUsers instanceof Array, `the store result is an array`)
 })
-
