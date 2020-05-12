@@ -1,0 +1,39 @@
+{
+  "name": "api",
+  "private": true,
+  "version": "1.0.0",
+  "description": "api",
+  "main": "index.js",
+  "scripts": {
+    "preserve": "knex migrate:latest",
+    "serve": "node src/index.js",
+    "test": "tape test/**/*.test.js | tap-spec"
+  },
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "body-parser": "^1.17.2",
+    "connect-redis": "4.0.3",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.5",
+    "dotty": "^0.1.0",
+    "express": "^4.15.3",
+    "express-async-handler": "^1.1.4",
+    "express-pino-logger": "4.0.0",
+    "express-session": "^1.14.2",
+    "ioredis": "4.14.1",
+    "knex": "0.20.2",
+    "passport": "0.4.0",
+    "passport-google-oauth": "2.0.0",
+    "passport-jwt": "^4.0.0",
+    "passport-oauth2-refresh": "^1.0.0",
+    "pg": "7.12.1",
+    "pino": "^5.12.2",
+    "randomstring": "^1.1.5"
+  },
+  "devDependencies": {
+    "mock-knex": "^0.4.8",
+    "sqlite3": "^4.2.0",
+    "tap-spec": "^5.0.0",
+    "tape": "^4.13.2"
+  }
+}

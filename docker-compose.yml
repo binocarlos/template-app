@@ -1,0 +1,58 @@
+version: '3.4'
+volumes:
+  postgres-data:
+  redis-data:
+services:
+  postgres:
+    image: postgres:9.6.1
+    env_file: .env
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  redis:
+    image: redis
+    volumes:
+      - redis-data:/data
+  router:
+    image: binocarlos/noxy
+    restart: always
+    ports:
+      - 80:80
+    depends_on:
+      - api
+      - frontend
+    environment:
+      - NOXY_DEFAULT_HOST=frontend
+      - NOXY_DEFAULT_PORT=8080
+      - NOXY_DEFAULT_WS=1
+      - NOXY_API_FRONT=/api/v1
+      - NOXY_API_HOST=api
+  frontend:
+    build:
+      context: ./frontend
+      target: build-env
+    restart: always
+    env_file: .env
+    ports:
+      - 8080:8080
+    entrypoint: bash -c 'if [ -n "$MANUALRUN" ]; then tail -f /dev/null; else yarn run develop; fi'
+    environment:
+      - NODE_ENV=development
+      - MANUALRUN
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/config:/app/config
+      - ./frontend/.cache:/app/.cache
+      - ./frontend/dist:/app/dist
+  api:
+    build:
+      context: ./api
+    restart: always
+    env_file: .env
+    entrypoint: bash -c 'if [ -n "$MANUALRUN" ]; then tail -f /dev/null; else yarn run serve; fi'
+    environment:
+      - NODE_ENV=development
+      - MANUALRUN
+    volumes:
+      - ./api/src:/app/src
+      - ./api/test:/app/test
+      - ./api/migrations:/app/migrations
