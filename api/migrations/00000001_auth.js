@@ -4,7 +4,6 @@ const up = (knex) => {
       table.specificType('id', 'serial primary key not null')
       table.specificType('created_at', 'timestamp default now()')
       table.string('email').unique().notNullable()
-      table.string('salt').notNullable()
       table.string('hashed_password').notNullable()
       table.json('meta')
     })

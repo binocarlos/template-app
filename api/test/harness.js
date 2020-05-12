@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const tape = require('tape')
 const Knex = require('knex')
+const axios = require('axios')
 const getPort = require('get-port')
 const randomstring = require('randomstring')
 
@@ -78,6 +79,21 @@ const setupWebserver = async (options, context) => {
   context.server = app.listen(port)
   context.port = port
   context.url = `http://localhost:${port}`
+  context.getClient = ({
+    base = '/api/v1',
+  } = {}) => {
+    const factory = method => (url, data) => axios({
+      method,
+      url: `${context.url}${base}${url}`,
+      data,
+    })
+    return {
+      get: factory('get'),
+      post: factory('post'),
+      put: factory('put'),
+      delete: factory('delete'),
+    }
+  }
 }
 
 const destroyWebserver = async (options, context) => {
