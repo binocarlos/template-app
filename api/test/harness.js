@@ -2,10 +2,12 @@ const fs = require('fs')
 const path = require('path')
 const tape = require('tape')
 const Knex = require('knex')
+const getPort = require('get-port')
 const randomstring = require('randomstring')
 
 const Store = require('../src/store')
 const Controllers = require('../src/controllers')
+const App = require('../src/app')
 
 const MIGRATIONS_FOLDER = path.join(__dirname, '..', 'migrations')
 
@@ -66,19 +68,40 @@ const destroyDatabase = async (options, context) => {
   await masterKnex.destroy()
 }
 
+const setupWebserver = async (options, context) => {
+  if(!options.web) return
+  const port = await getPort()
+  const app = App({
+    store: context.store,
+    controllers: context.controllers,
+  })
+  context.server = app.listen(port)
+  context.port = port
+  context.url = `http://localhost:${port}`
+}
+
+const destroyWebserver = async (options, context) => {
+  if(!options.web) return
+  if(!context.server) return
+  context.server.close()
+}
+
 const testHarness = (name, handler, options = {
   database: true,
   web: false,
 }) => {
+  if(options.web) options.database = true
   const context = {}
   tape(name, async (t) => {
     try {
       await setupDatabase(options, context)
+      await setupWebserver(options, context)
       await handler(t, context)
     } catch(err) {
       t.fail(err)
       console.log(err.stack)
     }
+    await destroyWebserver(options, context)
     await destroyDatabase(options, context)
     t.end()
   })

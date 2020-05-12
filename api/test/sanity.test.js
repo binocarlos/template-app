@@ -1,6 +1,7 @@
-const harness = require('../harness')
+const axios = require('axios')
+const harness = require('./harness')
 
-harness('database:sanity no error', async (t, {
+harness('database:sanity', async (t, {
   knex,
   store,
   controllers,
@@ -17,4 +18,13 @@ harness('database:sanity no error', async (t, {
   t.ok(storeUsers instanceof Array, `the store result is an array`)
   t.equal(controllerUsers.length, 0, `there are no controller users`)
   t.ok(controllerUsers instanceof Array, `the controller result is an array`)
+})
+
+harness('web:sanity', async (t, {
+  url,
+}) => {
+  const result = await axios.get(`${url}/k8s-probe`)
+  t.deepEqual(result.data, {ok: true}, `the data is returned`)
+}, {
+  web: true,
 })
