@@ -7,6 +7,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
 import HelperText from './HelperText'
+import { getProps } from './utils'
 
 const useStyles = makeStyles(theme => createStyles({
   root: {
@@ -15,21 +16,24 @@ const useStyles = makeStyles(theme => createStyles({
   },
 }))
 
-const CheckboxField = ({
-  field: {
-    name,
-    value,
-    onChange,
-  },
-  error,
-  touched,
-  item,
-}) => {
+const CheckboxField = (props) => {
+  const {
+    field: {
+      name,
+      value,
+      onChange,
+    },
+    disabled,
+    error,
+    touched,
+    item,
+  } = getProps(props)
+
   const classes = useStyles()
   const title = item.title || name
 
   return (
-    <FormControl component="fieldset" className={ classes.root }>
+    <FormControl component="fieldset" className={ classes.root } disabled={ disabled }>
       <FormLabel component="legend">{ title }</FormLabel>
       <FormGroup>
         <FormControlLabel

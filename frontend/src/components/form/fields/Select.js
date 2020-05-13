@@ -6,6 +6,7 @@ import FormControl from '@material-ui/core/FormControl'
 import MenuItem from '@material-ui/core/MenuItem'
 
 import HelperText from './HelperText'
+import { getProps } from './utils'
 
 const useStyles = makeStyles(theme => createStyles({
   root: {
@@ -14,21 +15,23 @@ const useStyles = makeStyles(theme => createStyles({
   },
 }))
 
-const SelectField = ({
-  field: {
-    name,
-    value,
-    onChange,
-  },
-  error,
-  touched,
-  item,
-}) => {
+const SelectField = () => {
+  const {
+    field: {
+      name,
+      value,
+      onChange,
+    },
+    disabled,
+    error,
+    touched,
+    item,
+  } = getProps(props)
   const classes = useStyles()
   const title = item.title || name
 
   return (
-    <FormControl component="fieldset" className={ classes.root }>
+    <FormControl component="fieldset" className={ classes.root } disabled={ disabled }>
       <InputLabel htmlFor={ name }>{ title }</InputLabel>
       <Select
         value={ value || '' }
