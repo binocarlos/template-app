@@ -1,88 +1,67 @@
 const SEARCH_FIELDS = [
-  'username',
-  `meta->'google'->>'displayName'`,
-  `meta->'google'->>'email'`,
+  'email',
+  `meta->'fullName'`,
 ]
 
 const AuthStore = ({
   knex,
 }) => {
-  
-  /*
-  
-    list
-
-      * search
-    
-  */
-  const list = (params = {}) => {
+ 
+  const list = ({
+    search,
+  } = {}) => {
     const query = knex
       .select()
       .from('useraccount')
-
-    if(params.search) {
+    if(search) {
       const sql = SEARCH_FIELDS.map(f => `${f} ILIKE ?`).join(' or ')
-      const sqlparams = SEARCH_FIELDS.map(f => `%${params.search}%`)
+      const sqlparams = SEARCH_FIELDS.map(f => `%${search}%`)
       query.whereRaw(sql, sqlparams)
     }
-
     return query
   }
 
-  /*
-  
-    get
-
-      * id
-      * username
-  
-  */
-  const get = (params) => 
-    knex('useraccount')
-      .where(params)
+  const get = ({
+    id,
+    email,
+  } = {}) => {
+    if(!id || !email) throw new Error(`id or email required for auth.get`)
+    const query = {}
+    if(id) query.id = id
+    else if(email) query.email = email
+    return knex('useraccount')
+      .where(query)
       .first()
+  }
 
-  /*
-  
-    create
-
-      * data
-    
-  */
-  const create = (params) => 
+  const create = ({
+    email,
+    hashed_password,
+    meta = {},
+  } = {}) => 
     knex('useraccount')
-      .insert(params.data)
+      .insert({
+        email,
+        hashed_password,
+        meta,
+      })
       .returning('*')
       .get(0)
 
-  /*
-  
-    save
-
-      * id
-      * data
-    
-  */
-  const save = (params) => 
+  const update = ({
+    id,
+    data,
+  } = {}) => 
     knex('useraccount')
-      .where({id: params.id})
-      .update(params.data)
+      .where({id})
+      .update(data)
       .returning('*')
       .get(0)
 
-  /*
-  
-    update - merges meta data top-level keys
-
-      * id
-      * data
-    
-  */
-  const updateMeta = async (params) => {
-    const {
-      id,
-      data,
-    } = params
+  const updateMeta = async ({
+    id,
+    data,
+  }) => {
     const user = await get({id})
     const meta = Object.assign({}, user.meta, data)
     return knex('useraccount')
@@ -98,7 +77,7 @@ const AuthStore = ({
     list,
     get,
     create,
-    save,
+    update,
     updateMeta,
   }
 }

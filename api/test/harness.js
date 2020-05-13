@@ -85,14 +85,20 @@ const setupWebserver = async (options, context) => {
     const factory = method => async (url, data) => {
       const useUrl = `${context.url}${base}${url}`
       try {
+        console.log(`${method} ${useUrl}`)
+        if(data) console.log(JSON.stringify(data, null, 4))
         const res = await axios({
           method,
           url: useUrl,
           data,
         })
+        console.log(`${res.status}`)
+        if(res.data) console.log(JSON.stringify(res.data, null, 4))
         return res
       } catch(err) {
-        throw new Error(`${method} ${useUrl} ${err.toString()}`)
+        console.log(`${err.response.status}`)
+        if(err.response.data) console.log(JSON.stringify(err.response.data, null, 4))
+        return err.response
       }
     }
       

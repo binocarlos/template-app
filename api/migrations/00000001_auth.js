@@ -5,6 +5,7 @@ const up = (knex) => {
       table.specificType('created_at', 'timestamp default now()')
       table.string('email').unique().notNullable()
       table.string('hashed_password').notNullable()
+      table.string('tags')
       table.json('meta')
     })
   ])

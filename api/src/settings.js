@@ -42,6 +42,7 @@ const args = require('minimist')(process.argv, {
 
     // security
     jwt_secret_key: process.env.JWT_SECRET_KEY,
+    jwt_expiry: process.env.JWT_EXPIRY || '1h',
     salt_rounds: process.env.SALT_ROUNDS || 10,
   }
 })

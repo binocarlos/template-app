@@ -10,8 +10,17 @@ const AuthAccess = ({
     })
   }
 
+  const admin = (req, res, next) => {
+    if(req.user && req.user.tags.indexOf('admin') >= 0) return next()
+    res.status(403)
+    res.json({
+      error: 'access denied',
+    })
+  }
+
   return {
     loggedIn,
+    admin,
   }
 }
 

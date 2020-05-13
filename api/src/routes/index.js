@@ -24,7 +24,11 @@ const Routes = ({
   }))
 
   app.get('/auth/status', auth.status)
-  //app.put('/auth/meta', authAccess.loggedIn, auth.updateMeta)
+  app.post('/auth/register', auth.register)
+  app.post('/auth/login', auth.login)
+  app.post('/auth/token', authAccess.loggedIn, auth.getToken)
+
+  //app.get('/auth/list', authAccess.admin, auth.list)
 
   return app
 }

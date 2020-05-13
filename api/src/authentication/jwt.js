@@ -1,10 +1,5 @@
 const ExtractJwt = require('passport-jwt').ExtractJwt
-const jwt = require('jsonwebtoken')
-const pino = require('pino')({
-  name: 'jwt',
-})
-
-const settings = require('../settings')
+const userUtils = require('../utils/user')
 
 const JWTAuthentication = ({
   controllers,
@@ -14,24 +9,15 @@ const JWTAuthentication = ({
     try {
       const token = tokenExtractor(req)
       if(!token) return next()
-      const payload = await new Promise((resolve, reject) => {
-        jwt.verify(token, settings.jwt_secret_key, (err, result) => {
-          if(err) return reject(err)
-          resolve(result)
-        })
+      const payload = await userUtils.verifyToken(token)
+      if(!payload || !payload.id) return next()
+      const user = await controllers.auth.get({
+        id: payload.id,
       })
-      if(payload.userid) {
-        const user = await controllers.auth.get({
-          id: payload.userid,
-        }, true)
-        if(!user) return next()
-        req.user = user
-      }
+      if(!user) return next()
+      req.user = user
       next()
     } catch(e) {
-      pino.error({
-        error: e.toString()
-      })
       return next()
     }
   }
