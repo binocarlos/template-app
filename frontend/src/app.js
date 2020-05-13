@@ -16,7 +16,7 @@ const App = ({
   
   useEffect(() => {
     const initialise = async () => {
-      await dispatch(authActions.initialise())
+      await dispatch(authActions.authenticate())
       router.start()
     }
     initialise()

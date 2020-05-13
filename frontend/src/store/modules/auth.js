@@ -9,8 +9,7 @@ import {
 } from '../utils/api'
 
 import networkWrapper from '../utils/networkWrapper'
-
-
+import routerActions from './router'
 
 import {
   REFRESH_TOKEN_DELAY,
@@ -27,7 +26,7 @@ const initialState = {
 const reducers = {
   setUser: (state, action) => {
     state.loaded = true
-    state.user = action.payload
+    state.data = action.payload
   },
 }
 
@@ -37,17 +36,20 @@ let refreshTokenLoop = null
 
 const sideEffects = {
 
-  initialise: () => async (dispatch, getState) => {
+  authenticate: (token) => async (dispatch, getState) => {
     let user
     try {
-      const token = localStorage.getItem('token')
       if(!token) {
-        dispatch(actions.setUser(null))
-        return
+        token = localStorage.getItem('token')
       }
-      setToken(token)
-      user = await handlers.get('/auth/status')
-      dispatch(actions.startTokenLoop())
+      if(token) {
+        localStorage.setItem('token', token)
+        setToken(token)
+        user = await handlers.get('/auth/status')
+        if(user) {
+          dispatch(actions.startTokenLoop())
+        }
+      }
     } catch(e) {
       localStorage.setItem('token', '')
       unsetToken()
@@ -56,6 +58,7 @@ const sideEffects = {
   },
 
   startTokenLoop: () => (dispatch, getState) => {
+    clearInterval(refreshTokenLoop)
     refreshTokenLoop = setInterval(() => {
       dispatch(actions.refreshToken())
     }, REFRESH_TOKEN_DELAY)
@@ -69,12 +72,39 @@ const sideEffects = {
     console.log('refresh token')
   },
 
+  register: ({
+    email,
+    password,
+  }) => wrapper('register', async (dispatch, getState) => {
+    const {
+      token,
+    } = await handlers.post('/auth/register', {
+      email,
+      password,
+    })
+    await dispatch(actions.authenticate(token))
+    dispatch(routerActions.navigateTo('home'))
+  }),
+
   login: ({
     email,
     password,
   }) => wrapper('login', async (dispatch, getState) => {
-    await Promise.delay(2000)
-    throw new Error('test')
+    const {
+      token,
+    } = await handlers.post('/auth/login', {
+      email,
+      password,
+    })
+    await dispatch(actions.authenticate(token))
+    dispatch(routerActions.navigateTo('home'))
+  }),
+
+  logout:() => wrapper('logout', async (dispatch, getState) => {
+    localStorage.setItem('token', '')
+    unsetToken()
+    dispatch(actions.setUser(null))
+    dispatch(routerActions.navigateTo('login'))
   }),
 }
 

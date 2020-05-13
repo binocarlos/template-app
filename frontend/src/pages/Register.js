@@ -102,8 +102,8 @@ const Register = ({
 }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const loading = useSelector(authSelectors.login.loading)
-  const error = useSelector(authSelectors.login.error)
+  const loading = useSelector(authSelectors.register.loading)
+  const error = useSelector(authSelectors.register.error)
 
   const onRegister = useCallback((payload) => {
     dispatch(authActions.register(payload))

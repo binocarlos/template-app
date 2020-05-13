@@ -14,10 +14,12 @@ const routes = [
   {
     name: 'login',
     path: '/login',
+    auth: auth.guest,
   },
   {
     name: 'register',
     path: '/register',
+    auth: auth.guest,
   },
   {
     name: 'help',
