@@ -1,5 +1,5 @@
 import React from 'react'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -9,7 +9,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import HelperText from './HelperText'
 import { getProps } from './utils'
 
-const useStyles = makeStyles(theme => createStyles({
+const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     marginTop: theme.spacing(2),

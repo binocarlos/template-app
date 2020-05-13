@@ -29,6 +29,11 @@ const routes = [
     name: 'notfound',
     path: '/notfound',
   },
+  {
+    name: 'settings',
+    path: '/settings',
+    auth: auth.user,
+  },
 ]
 
 

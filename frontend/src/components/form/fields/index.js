@@ -4,6 +4,7 @@ import RadioField from './Radio'
 import CheckboxField from './Checkbox'
 import MultipleCheckboxField from './MultipleCheckbox'
 import SelectField from './Select'
+import ColorField from './Color'
 
 const fields = {
   text: TextField,
@@ -12,6 +13,7 @@ const fields = {
   checkbox: CheckboxField,
   multipleCheckbox: MultipleCheckboxField,
   select: SelectField,
+  color: ColorField,
 }
 
 export const defaultValues = {
@@ -21,6 +23,9 @@ export const defaultValues = {
   checkbox: false,
   multipleCheckbox: {},
   select: '',
+  color: {
+    color: ''
+  },
 }
 
 export default fields

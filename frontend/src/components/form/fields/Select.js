@@ -1,5 +1,5 @@
 import React from 'react'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import InputLabel from '@material-ui/core/InputLabel'
 import Select from '@material-ui/core/Select'
 import FormControl from '@material-ui/core/FormControl'
@@ -8,7 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import HelperText from './HelperText'
 import { getProps } from './utils'
 
-const useStyles = makeStyles(theme => createStyles({
+const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     //marginTop: theme.spacing(2),

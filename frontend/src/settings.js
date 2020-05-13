@@ -17,6 +17,9 @@ export const GUEST_MENU = [{
 export const USER_MENU = [{
   title: 'Home',
   link: 'home',
+}, {
+  title: 'Settings',
+  link: 'settings',
 }, '-', {
   title: 'Logout',
   handler: (dispatch, getState) => {

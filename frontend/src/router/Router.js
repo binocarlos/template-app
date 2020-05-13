@@ -13,6 +13,8 @@ import Register from 'pages/Register'
 import NotFound from 'pages/NotFound'
 import Help from 'pages/Help'
 
+import Settings from 'pages/Settings'
+
 const Router = ({
 
 }) => {
@@ -41,6 +43,9 @@ const Router = ({
         </Route>
         <Route segment="help" exact>
           <Help />
+        </Route>
+        <Route segment="settings" exact>
+          <Settings />
         </Route>
       </Layout>
     </RouteContext.Provider>
