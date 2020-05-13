@@ -14,6 +14,8 @@ import snackbarActions from './snackbar'
 
 import {
   REFRESH_TOKEN_DELAY,
+  ROUTE_LOGGED_IN,
+  ROUTE_LOGGED_OUT,
 } from 'settings'
 
 const prefix = 'auth'
@@ -69,10 +71,10 @@ const sideEffects = {
     clearInterval(refreshTokenLoop)
   },
 
-  refreshToken: () => (dispatch, getState) => {
+  refreshToken: () => async (dispatch, getState) => {
     try {
       const { token } = await handlers.post('/auth/token')
-      localStorage.setItem('token', '')
+      localStorage.setItem('token', token)
       setToken(token)
     } catch(e) {
       dispatch(snackbarActions.setError(`you have been logged out`))
@@ -91,7 +93,7 @@ const sideEffects = {
       password,
     })
     await dispatch(actions.authenticate(token))
-    dispatch(routerActions.navigateTo('home'))
+    dispatch(routerActions.navigateTo(ROUTE_LOGGED_IN))
   }),
 
   login: ({
@@ -105,14 +107,14 @@ const sideEffects = {
       password,
     })
     await dispatch(actions.authenticate(token))
-    dispatch(routerActions.navigateTo('home'))
+    dispatch(routerActions.navigateTo(ROUTE_LOGGED_IN))
   }),
 
   logout:() => wrapper('logout', async (dispatch, getState) => {
     localStorage.setItem('token', '')
     unsetToken()
     dispatch(actions.setUser(null))
-    dispatch(routerActions.navigateTo('login'))
+    dispatch(routerActions.navigateTo(ROUTE_LOGGED_OUT))
   }),
 }
 

@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const RadioField = () => {
+const RadioField = (props) => {
 
   const {
     field: {
@@ -25,6 +25,7 @@ const RadioField = () => {
       value,
       onChange,
     },
+    disabled,
     error,
     touched,
     item,

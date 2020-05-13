@@ -65,9 +65,9 @@ const SimpleTable = ({
               return (
                 <TableRow
                   hover
-                  onClick={event => {
+                  onClick={e => {
                     if(!onRowClick) return
-                    onRowClick(event, dataRow.id)
+                    onRowClick(dataRow)
                   }}
                   tabIndex={-1}
                   key={ i }

@@ -1,4 +1,5 @@
 const Auth = require('./auth')
+const BookingForm = require('./bookingform')
 const Storage = require('./storage')
 
 const Controllers = ({
@@ -13,6 +14,11 @@ const Controllers = ({
     getController,
   })
 
+  const bookingform = BookingForm({
+    store,
+    getController,
+  })
+
   const storage = Storage({
     store,
     getController,
@@ -20,6 +26,7 @@ const Controllers = ({
 
   controllers = {
     auth,
+    bookingform,
     storage,
   }
 

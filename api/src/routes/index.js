@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const AuthAccess = require('../authentication/authAccess')
 const JWTAuthentication = require('../authentication/jwt')
 const AuthRoutes = require('./auth')
+const BookingFormRoutes = require('./bookingform')
 const StorageRoutes = require('./storage')
 
 const Routes = ({
@@ -16,6 +17,10 @@ const Routes = ({
   })
 
   const auth = AuthRoutes({
+    controllers,
+  })
+
+  const bookingform = BookingFormRoutes({
     controllers,
   })
 
@@ -36,7 +41,11 @@ const Routes = ({
   app.get('/storage/download', storage.download)
   app.post('/storage/upload', authAccess.loggedIn, storage.upload)
 
-  //app.get('/auth/list', authAccess.admin, auth.list)
+  app.get('/bookingforms', authAccess.loggedIn, bookingform.list)
+  app.get('/bookingforms/:id', authAccess.loggedIn, bookingform.get)
+  app.post('/bookingforms', authAccess.loggedIn, bookingform.create)
+  app.put('/bookingforms/:id', authAccess.loggedIn, bookingform.update)
+  app.delete('/bookingforms/:id', authAccess.loggedIn, bookingform.delete)
 
   return app
 }

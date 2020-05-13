@@ -2,7 +2,6 @@ import React from 'react'
 
 import FormWrapper from './Wrapper'
 import Render from './Render'
-import HelperText from './fields/HelperText'
 
 const Form = ({
   schema,

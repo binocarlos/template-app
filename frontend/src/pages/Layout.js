@@ -13,10 +13,12 @@ import GlobalLoading from 'components/system/GlobalLoading'
 
 import authSelectors from 'store/selectors/auth'
 import networkSelectors from 'store/selectors/network'
+import routerSelectors from 'store/selectors/router'
 
 import {
-  GUEST_MENU,
-  USER_MENU,
+  PUBLIC_MENU,
+  ADMIN_GUEST_MENU,
+  ADMIN_USER_MENU,
 } from 'settings'
 
 const useStyles = makeStyles(theme => ({
@@ -44,12 +46,17 @@ const Layout = ({
 }) => {
   const classes = useStyles()
 
+  const route = useSelector(routerSelectors.route)
   const user = useSelector(authSelectors.data)
   const globalLoading = useSelector(networkSelectors.globalLoading)
 
-  const MENU = user ?
-    USER_MENU :
-    GUEST_MENU
+  let MENU = PUBLIC_MENU
+
+  if(route.name.indexOf('admin.') == 0) {
+    MENU = user ?
+      ADMIN_USER_MENU :
+      ADMIN_GUEST_MENU
+  }
 
   return (
     <div className={ classes.root }>
