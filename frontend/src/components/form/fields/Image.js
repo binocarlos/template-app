@@ -4,6 +4,7 @@ import { createStyles, makeStyles } from '@material-ui/core/styles'
 import { useSelector, useDispatch } from 'react-redux'
 import { useDropzone } from 'react-dropzone'
 
+import Typography from '@material-ui/core/Typography'
 import Tooltip from '@material-ui/core/Tooltip'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
@@ -20,6 +21,10 @@ import fileuploadActions from 'store/modules/fileupload'
 import fileuploadSelectors from 'store/selectors/fileupload'
 
 import icons from 'icons'
+
+import {
+  getUrl,
+} from 'utils/storage'
 
 const DeleteIcon = icons.delete
 const UploadIcon = icons.upload
@@ -45,12 +50,25 @@ const useStyles = makeStyles(theme => createStyles({
   },
   button: {
     margin: theme.spacing(1),
+  },
+  info: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  intro: {
+    marginRight: theme.spacing(2),
+  },
+  imageContainer: {
+    marginTop: theme.spacing(2),
+  },
+  filepath: {
+    marginTop: theme.spacing(2),
   }
 }))
 
-const isImage = (url) => {
-  if(url.match(/\.{jpg,png,jpeg,gif}$/i)) return true
-  if(url.indexOf('unsplash.com') >= 0) return true
+const isImage = (data) => {
+  if(data.type.indexOf('image') == 0) return true
+  if(data.filename.match(/\.{jpg,png,jpeg,gif}$/i)) return true
   return false
 }
 
@@ -87,9 +105,6 @@ const ImageField = ({
         files,
         path: item.path,
       })
-      console.log('--------------------------------------------')
-      console.log('--------------------------------------------')
-      console.dir(result)
       if(!result || !result[0]) return
       setFieldValue(name, result[0], file)
     },
@@ -162,32 +177,42 @@ const ImageField = ({
   ) : (
     <div className={ classes.container }>
       <Grid container spacing={4}>
-        <Grid item xs={12} sm={2}>
-          <InputLabel 
-            htmlFor={ name }>{ item.title || item.id }</InputLabel>
+        <Grid item xs={12} sm={6}>
+          <div className={ classes.info }>
+            <div className={ classes.intro }>
+              <InputLabel 
+                htmlFor={ name }>{ item.title || item.id }
+              </InputLabel>
+              {
+                helperText ? (
+                  <FormHelperText error={ false } id={ name + "-helperText" }>
+                    { helperText }
+                  </FormHelperText>
+                ) : null
+              }
+            </div>
+            { buttons }
+          </div>
           {
-            helperText ? (
-              <FormHelperText error={ false } id={ name + "-helperText" }>
-                { helperText }
-              </FormHelperText>
-            ) : null
+            value && isImage(value) && (
+              <div className={ classes.imageContainer }>
+                <img className={ classes.image } src={ getUrl(value.filepath) } />
+              </div>
+            )
+          }
+          {
+            value && (
+              <div className={ classes.filepath }>
+                <Typography variant="caption">
+                  { value.filename }
+                </Typography>
+              </div>
+            )
           }
         </Grid>
-        {
-          value && value.url && isImage(value.url) ? (
-            <Grid item xs={12} sm={3}>
-              <img className={ classes.image } src={ value.url } />
-            </Grid>
-          ) : ''
-        }
-        <Grid item xs={12} sm={7}>
-          { buttons }
-        </Grid>
-        <Grid item xs={12}>
-          <div {...getRootProps()}>
-            <input {...getInputProps()} />
-          </div>
-        </Grid>
+        <div {...getRootProps()}>
+          <input {...getInputProps()} />
+        </div>
       </Grid>
       {
         uploadError && (

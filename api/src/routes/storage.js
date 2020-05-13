@@ -22,8 +22,28 @@ const StorageRoutes = ({
     res.json(result)
   }
 
-  const download = (req, res) => {
-    res.json({ok:true})
+  const download = async (req, res) => {
+    const {
+      filepath,
+    } = req.query
+
+    const downloadStream = await controllers.storage.download({
+      filepath,
+    })
+
+    downloadStream
+      .on('error', (err) => {
+        res.status(500)
+        res.end(err.toString())
+      })
+      .on('response', (remoteResponse) => {
+        res.set({
+          'content-type': remoteResponse.headers['content-type'],
+          'content-length': remoteResponse.headers['content-type'],
+          'etag': remoteResponse.headers['etag'],
+        })
+      })
+      .pipe(res)
   }
 
   return {
