@@ -37,8 +37,8 @@ const authorizeRoute = (routes) => (router, dependencies) => (toState, fromState
   }
 
   const authorizeHandlers = findRoutes(routes, toActivate)
-    .map(route => route.authorize)
-    .filter(authorize => authorize)
+    .map(route => route.auth)
+    .filter(auth => auth)
 
   // there are no authorize settings on this route
   if(authorizeHandlers.length <= 0) return done()

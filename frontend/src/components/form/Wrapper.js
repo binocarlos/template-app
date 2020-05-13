@@ -6,7 +6,6 @@ import Validate from './validate'
 const FormWrapper = ({
   schema,
   initialValues,
-  error,
   children = () => {},
   onSubmit,
 }) => {

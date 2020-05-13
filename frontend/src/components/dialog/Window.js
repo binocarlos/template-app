@@ -47,7 +47,7 @@ const Window = ({
   rightButtons,
   buttons,
   withCancel,
-  loading,
+  loading = false,
   submitTitle = 'Save',
   cancelTitle = 'Cancel',
   open,
@@ -61,6 +61,7 @@ const Window = ({
   onCancel,
   onSubmit,
   theme = {},
+  disabled = false,
 }) => {
   const classes = useStyles()
 
@@ -133,7 +134,7 @@ const Window = ({
                       type="button"
                       variant="contained"
                       color="primary"
-                      disabled={ loading ? true : false }
+                      disabled={ disabled || loading ? true : false }
                       onClick={ onSubmit }
                     >
                       { submitTitle }

@@ -2,6 +2,7 @@ const routes = [
   {
     name: 'home',
     path: '/',
+    auth: 'user',
   },
   {
     name: 'login',

@@ -24,28 +24,9 @@ const RadioField = ({
   error,
   touched,
   item,
-  values,
-  handlers,
-  handlerContext,
 }) => {
   const classes = useStyles()
   const title = item.title || name
-
-  const disabled = handlers && handlers.isDisabled ?
-    handlers.isDisabled({
-      name,
-      value,
-      values,
-      context: handlerContext,
-    }) : false
-
-  const useValue = handlers && handlers.getValue ?
-    handlers.getValue({
-      name,
-      value,
-      values,
-      context: handlerContext,
-    }) : value
 
   return (
     <FormControl component="fieldset" className={ classes.root }>
@@ -53,7 +34,7 @@ const RadioField = ({
       <RadioGroup
         aria-label={ title }
         name={ name }
-        value={ useValue }
+        value={ value }
         onChange={ onChange }
         row={ item.row ? true : false }
       >

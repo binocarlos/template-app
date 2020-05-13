@@ -37,7 +37,6 @@ const sideEffects = {
       const token = localStorage.getItem('token')
       if(!token) {
         dispatch(actions.setUser(null))
-        console.log('done auth')
         return
       }
       setToken(token)

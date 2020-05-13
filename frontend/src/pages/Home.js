@@ -11,7 +11,6 @@ const Home = ({
 
 }) => {
   const classes = useStyles()
-
   return (
     <div className={ classes.root }>
       Home
