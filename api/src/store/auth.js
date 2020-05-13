@@ -25,7 +25,7 @@ const AuthStore = ({
     id,
     email,
   } = {}) => {
-    if(!id || !email) throw new Error(`id or email required for auth.get`)
+    if(!id && !email) throw new Error(`id or email required for auth.get`)
     const query = {}
     if(id) query.id = id
     else if(email) query.email = email

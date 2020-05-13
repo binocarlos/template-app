@@ -12,9 +12,10 @@ const AuthRoutes = ({
   const register = async (req, res) => {
     try {
       const result = await controllers.auth.register(req.body)
+      res.status(201)
       res.json(result)
     } catch(e) {
-      res.status(403)
+      res.status(400)
       res.json({
         error: e.toString()
       })
@@ -42,7 +43,10 @@ const AuthRoutes = ({
   }
 
   const getToken = async (req, res) => {
-    const result = await controllers.auth.getToken(req.user.id)
+    const result = await controllers.auth.getToken({
+      userid: req.user.id
+    })
+    res.status(201)
     res.json(result)
   }
 

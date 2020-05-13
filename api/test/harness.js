@@ -81,23 +81,33 @@ const setupWebserver = async (options, context) => {
   context.url = `http://localhost:${port}`
   context.getClient = ({
     base = '/api/v1',
+    token,
   } = {}) => {
     const factory = method => async (url, data) => {
       const useUrl = `${context.url}${base}${url}`
       try {
-        console.log(`${method} ${useUrl}`)
-        if(data) console.log(JSON.stringify(data, null, 4))
+        if(process.env.DEBUG_HTTP) {
+          console.log(`${method} ${useUrl}`)
+          if(data) console.log(JSON.stringify(data, null, 4))
+        }
+        const headers = {}
+        if(token) headers.Authorization = `Bearer ${token}`
         const res = await axios({
           method,
           url: useUrl,
           data,
+          headers,
         })
-        console.log(`${res.status}`)
-        if(res.data) console.log(JSON.stringify(res.data, null, 4))
+        if(process.env.DEBUG_HTTP) {
+          console.log(`${res.status}`)
+          if(res.data) console.log(JSON.stringify(res.data, null, 4))
+        }
         return res
       } catch(err) {
-        console.log(`${err.response.status}`)
-        if(err.response.data) console.log(JSON.stringify(err.response.data, null, 4))
+        if(process.env.DEBUG_HTTP) {
+          console.log(`${err.response.status}`)
+          if(err.response.data) console.log(JSON.stringify(err.response.data, null, 4))
+        }
         return err.response
       }
     }

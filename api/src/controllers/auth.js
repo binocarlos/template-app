@@ -35,6 +35,7 @@ const AuthController = ({
   const getToken = async ({
     userid,
   }) => {
+    if(!userid) throw new Error(`userid required for getToken`)
     const token = await userUtils.getToken(userid)
     return {token}
   }
