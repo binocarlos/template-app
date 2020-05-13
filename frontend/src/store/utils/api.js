@@ -24,6 +24,8 @@ export const getErrorMessage = (error) => {
   return message.replace(/^Error\: Error\:/, 'Error:')
 }
 
+export const getUrl = (path) => `${API}${path}`
+
 const factory = method => async (url, data, extra = {}) => axios({
   method,
   url: `${API}${url}`,

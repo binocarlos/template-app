@@ -26,6 +26,11 @@ const SCHEMA = [{
   title: 'Colour',
   helperText: 'Choose the main Colour',
   component: 'color',
+}, {
+  id: 'logo',
+  title: 'Logo',
+  helperText: 'Upload a logo',
+  component: 'image',
 }]
 
 const HANDLERS = {}

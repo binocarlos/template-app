@@ -5,6 +5,7 @@ import CheckboxField from './Checkbox'
 import MultipleCheckboxField from './MultipleCheckbox'
 import SelectField from './Select'
 import ColorField from './Color'
+import ImageField from './Image'
 
 const fields = {
   text: TextField,
@@ -14,6 +15,7 @@ const fields = {
   multipleCheckbox: MultipleCheckboxField,
   select: SelectField,
   color: ColorField,
+  image: ImageField,
 }
 
 export const defaultValues = {
@@ -26,6 +28,7 @@ export const defaultValues = {
   color: {
     color: ''
   },
+  image: null,
 }
 
 export default fields
