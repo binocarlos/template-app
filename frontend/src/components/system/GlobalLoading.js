@@ -23,8 +23,8 @@ const useStyles = makeStyles(theme => createStyles({
     padding: theme.spacing(6),
     backgroundColor: '#ffffff',
     border: '1px solid #e5e5e5',
-    boxShadow: '5px 5px 5px 0px rgba(0,0,0,0.2)',
-    borderRadius: 20,
+    //boxShadow: '5px 5px 5px 0px rgba(0,0,0,0.2)',
+    //borderRadius: 20,
   },
   logs: {
     color: '#999'

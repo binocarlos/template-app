@@ -11,6 +11,7 @@
     "tap-spec": "tap-spec"
   },
   "dependencies": {
+    "@google-cloud/storage": "^4.7.0",
     "axios": "^0.19.2",
     "bcrypt": "^4.0.1",
     "bluebird": "^3.7.2",
@@ -25,13 +26,15 @@
     "express-session": "^1.14.2",
     "ioredis": "4.14.1",
     "knex": "0.20.2",
+    "mime-types": "^2.1.27",
     "passport": "0.4.0",
     "passport-google-oauth": "2.0.0",
     "passport-jwt": "^4.0.0",
     "passport-oauth2-refresh": "^1.0.0",
     "pg": "7.12.1",
     "pino": "^5.12.2",
-    "randomstring": "^1.1.5"
+    "randomstring": "^1.1.5",
+    "uuid": "^8.0.0"
   },
   "devDependencies": {
     "get-port": "^5.1.1",

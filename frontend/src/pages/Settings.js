@@ -31,6 +31,7 @@ const SCHEMA = [{
   title: 'Logo',
   helperText: 'Upload a logo',
   component: 'image',
+  path: 'settings',
 }]
 
 const HANDLERS = {}

@@ -165,7 +165,7 @@ const sideEffects = {
 
 const getFileUrlQuery = (file, path) => {
   const params = {
-    name: file.name,
+    filename: file.name,
     type: file.type,
     size: file.size,
   }
@@ -182,6 +182,8 @@ const apiUploader = ({
   onProgress,
 }) => {
   return new Promise((resolve, reject) => {
+
+    const token = localStorage.getItem('token')
     const xhr = new XMLHttpRequest()
 
     const eventOnProgress = (e) => {
@@ -229,6 +231,7 @@ const apiUploader = ({
       '?'
     let useUrl = url + seperator + queryParams
     xhr.open('POST', useUrl, true)
+    xhr.setRequestHeader('Authorization', `Bearer ${token}`)
     xhr.send(file)
   })
 }

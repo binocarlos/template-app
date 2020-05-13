@@ -87,6 +87,9 @@ const ImageField = ({
         files,
         path: item.path,
       })
+      console.log('--------------------------------------------')
+      console.log('--------------------------------------------')
+      console.dir(result)
       if(!result || !result[0]) return
       setFieldValue(name, result[0], file)
     },
@@ -137,8 +140,6 @@ const ImageField = ({
   ])
 
   const helperText = item.helperText
-
-  console.log(uploadInProgress)
 
   return uploadInProgress ? (
     <div className={ classes.container }>

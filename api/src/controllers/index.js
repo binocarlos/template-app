@@ -1,4 +1,5 @@
 const Auth = require('./auth')
+const Storage = require('./storage')
 
 const Controllers = ({
   store,
@@ -12,8 +13,14 @@ const Controllers = ({
     getController,
   })
 
+  const storage = Storage({
+    store,
+    getController,
+  })
+
   controllers = {
     auth,
+    storage,
   }
 
   return controllers
