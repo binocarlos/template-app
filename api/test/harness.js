@@ -82,11 +82,20 @@ const setupWebserver = async (options, context) => {
   context.getClient = ({
     base = '/api/v1',
   } = {}) => {
-    const factory = method => (url, data) => axios({
-      method,
-      url: `${context.url}${base}${url}`,
-      data,
-    })
+    const factory = method => async (url, data) => {
+      const useUrl = `${context.url}${base}${url}`
+      try {
+        const res = await axios({
+          method,
+          url: useUrl,
+          data,
+        })
+        return res
+      } catch(err) {
+        throw new Error(`${method} ${useUrl} ${err.toString()}`)
+      }
+    }
+      
     return {
       get: factory('get'),
       post: factory('post'),

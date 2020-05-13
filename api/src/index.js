@@ -25,11 +25,9 @@ const app = App({
   controllers,
 })
 
-const server = app.listen(settings.port, () => {
+app.listen(settings.port, () => {
   pino.info({
     action: 'webserver.start',
     message: `webserver started on port ${settings.port}`,
   })
 })
-
-monitoring.shutdownHandler(server)
