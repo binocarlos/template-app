@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
+import { Link } from 'react-router5'
 
 import Form from 'components/form/Form'
 
@@ -19,7 +20,10 @@ const useStyles = makeStyles(theme => ({
   },
   buttons: {
     marginTop: theme.spacing(4),
-  }
+  },
+  footer: {
+    marginTop: theme.spacing(4),
+  },
 }))
 
 const SCHEMA = [{
@@ -126,6 +130,11 @@ const Login = ({
             }
           }
         </Form>
+        <div className={ classes.footer }>
+          <Typography variant="body1">
+            <Link routeName="register">Click here</Link> to register an account...
+          </Typography>
+        </div>
       </Paper>
     </div>
   )

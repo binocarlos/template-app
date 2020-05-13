@@ -34,33 +34,28 @@ const authorizeRoute = (routes) => (router, dependencies) => (toState, fromState
   const routeError = (message) => {
     console.error(message)
     store.dispatch(snackbarActions.setError(message))
+    done(message)
   }
 
   const authorizeHandlers = findRoutes(routes, toActivate)
     .map(route => route.auth)
     .filter(auth => auth)
 
-  // there are no authorize settings on this route
-  if(authorizeHandlers.length <= 0) return done()
-  // check there is only a single auth requirement
-  if(authorizeHandlers.length > 1) {
-    routeError(`multiple authorize settings found in route`)
-    return
-  }
+  if(authorizeHandlers.length <= 0) return done()  
+  if(authorizeHandlers.length > 1) return routeError(`multiple authorize settings found in route`)
 
-  const authorizeHandler = typeof(authorizeHandlers[0] == 'string') ?
-    AUTH_HANDLERS[authorizeHandlers[0]] :
-    authorizeHandlers[0]
-
-  if(!authorizeHandler) return done()
-
+  const authorizeHandler = authorizeHandlers[0]
   const redirectTo = authorizeHandler(store)
 
   if(!redirectTo) {
     done()
   }
   else {
-    store.dispatch(routerActions.navigateTo(redirectTo))
+    done({
+      redirect: {
+        name: redirectTo,
+      },
+    })
   }
 }
 

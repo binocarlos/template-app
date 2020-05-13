@@ -37,7 +37,11 @@ const redirectRoute = (routes) => (router, dependencies) => (toState, fromState,
   }
 
   if(redirectTo && redirectTo != activeRoute.name) {
-    store.dispatch(routerActions.navigateTo(redirectTo)) 
+    done({
+      redirect: {
+        name: redirectTo,
+      },
+    })
   }
   else {
     done()
