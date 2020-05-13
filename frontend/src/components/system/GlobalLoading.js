@@ -20,11 +20,10 @@ const useStyles = makeStyles(theme => createStyles({
       'rgba(255, 255, 255, 1)'
   }),
   loadingContainer: {
-    width: '600px',
-    height: '300px',
+    padding: theme.spacing(6),
     backgroundColor: '#ffffff',
     border: '1px solid #e5e5e5',
-    boxShadow: 'none',
+    boxShadow: '5px 5px 5px 0px rgba(0,0,0,0.2)',
     borderRadius: 20,
   },
   logs: {
