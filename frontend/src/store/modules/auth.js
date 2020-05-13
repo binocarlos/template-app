@@ -10,6 +10,7 @@ import {
 
 import networkWrapper from '../utils/networkWrapper'
 import routerActions from './router'
+import snackbarActions from './snackbar'
 
 import {
   REFRESH_TOKEN_DELAY,
@@ -69,7 +70,14 @@ const sideEffects = {
   },
 
   refreshToken: () => (dispatch, getState) => {
-    console.log('refresh token')
+    try {
+      const { token } = await handlers.post('/auth/token')
+      localStorage.setItem('token', '')
+      setToken(token)
+    } catch(e) {
+      dispatch(snackbarActions.setError(`you have been logged out`))
+      dispatch(actions.logout())
+    }
   },
 
   register: ({
