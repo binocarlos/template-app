@@ -29,8 +29,7 @@ const networkWrapper = ({
   // whether to show a snackbar error if an error occurs
   snackbarError = true,
 
-  // auto-trigger uiActions.setLoading before and after
-  globalLoading = false,
+  globalLoading = true,
 
 }) => async (dispatch, getState) => {
 
@@ -75,7 +74,7 @@ const networkWrapper = ({
   }
 
   if(globalLoading) {
-    dispatch(networkActions.setGlobalLoading(false))
+    dispatch(networkActions.setGlobalLoading(null))
   }
 
   return result

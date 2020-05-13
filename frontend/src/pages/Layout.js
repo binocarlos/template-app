@@ -9,8 +9,10 @@ import Typography from '@material-ui/core/Typography'
 import SideMenu from 'components/layout/SideMenu'
 import AppBarMenu from 'components/layout/AppBarMenu'
 import Snackbar from 'components/system/Snackbar'
+import GlobalLoading from 'components/system/GlobalLoading'
 
 import authSelectors from 'store/selectors/auth'
+import networkSelectors from 'store/selectors/network'
 
 import {
   GUEST_MENU,
@@ -43,6 +45,7 @@ const Layout = ({
   const classes = useStyles()
 
   const user = useSelector(authSelectors.data)
+  const globalLoading = useSelector(networkSelectors.globalLoading)
 
   const MENU = user ?
     USER_MENU :
@@ -72,6 +75,9 @@ const Layout = ({
       <div className={ classes.content }>
         { children }
       </div>
+      <GlobalLoading
+        loading={ globalLoading }
+      />
       <Snackbar />
     </div>
   )

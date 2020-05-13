@@ -10,7 +10,9 @@ const initialState = {
 }
 
 const reducers = {
-  setGlobalLoading: (state, action) => state.globalLoading = action.payload,
+  setGlobalLoading: (state, action) => {
+    state.globalLoading = action.payload
+  },
   setLoading: (state, action) => {
     const {
       name,
