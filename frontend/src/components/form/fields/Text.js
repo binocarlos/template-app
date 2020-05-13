@@ -1,17 +1,21 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField'
 
-const Text = ({
-  field: {
-    name,
-    value,
-    onChange,
-    onBlur
-  },
-  error,
-  touched,
-  item,
-}) => {
+import { getProps } from './utils'
+
+const Text = (props) => {
+  const {
+    field: {
+      name,
+      value,
+      onChange,
+      onBlur
+    },
+    disabled,
+    error,
+    touched,
+    item,
+  } = getProps(props)
   const inputProps = item.inputProps || {}
   return (
     <TextField
@@ -22,6 +26,7 @@ const Text = ({
       helperText={ touched && error ? error : item.helperText }
       error={ touched && Boolean(error) }
       value={ value || '' }
+      disabled={ disabled }
       onChange={ onChange }
       onBlur={ onBlur }
       { ...inputProps }

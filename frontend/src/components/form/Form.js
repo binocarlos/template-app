@@ -2,9 +2,11 @@ import React from 'react'
 
 import FormWrapper from './Wrapper'
 import Render from './Render'
+import HelperText from './fields/HelperText'
 
 const Form = ({
   schema,
+  handlers = {},
   initialValues,
   error,
   onSubmit,
@@ -14,6 +16,7 @@ const Form = ({
     <FormWrapper
       schema={ schema }
       initialValues={ initialValues }
+      handlers={ handlers }
       onSubmit={ onSubmit }
     >
       {
@@ -24,20 +27,19 @@ const Form = ({
           showErrors,
           touched,
           onSubmit,
-          onSetFieldValue,
         }) => {
           return (
             <>
               <Render
                 fullHeight
                 schema={ schema }
+                handlers={ handlers }
                 error={ error }
                 isValid={ isValid }
                 values={ values }
                 errors={ errors }
                 touched={ touched }
                 showErrors={ showErrors }
-                onSetFieldValue={ onSetFieldValue }
               />
               {
                 children({

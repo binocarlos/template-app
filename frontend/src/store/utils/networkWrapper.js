@@ -74,7 +74,7 @@ const networkWrapper = ({
     await after(dispatch, getState)
   }
 
-  if(autoLoading) {
+  if(globalLoading) {
     dispatch(networkActions.setGlobalLoading(false))
   }
 

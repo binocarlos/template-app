@@ -6,6 +6,7 @@ import Render from './Render'
 
 const FormDialog = ({
   schema,
+  handlers = {},
   initialValues,
   error,
   loading,
@@ -17,6 +18,7 @@ const FormDialog = ({
     <FormWrapper
       schema={ schema }
       initialValues={ initialValues }
+      handlers={ handlers }
       onSubmit={ onSubmit }
     >
       {
@@ -27,7 +29,6 @@ const FormDialog = ({
           showErrors,
           touched,
           onSubmit,
-          onSetFieldValue,
         }) => {
           return (
             <Window
@@ -41,6 +42,7 @@ const FormDialog = ({
               <Render
                 fullHeight
                 schema={ schema }
+                handlers={ handlers }
                 error={ error }
                 isValid={ isValid }
                 values={ values }
@@ -49,7 +51,6 @@ const FormDialog = ({
                 showErrors={ showErrors }
                 onSubmit={ onSubmit }
                 onCancel={ onCloseWindow }
-                onSetFieldValue={ onSetFieldValue }
               />
             </Window>
           )

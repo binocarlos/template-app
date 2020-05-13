@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useCallback } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 
 import Form from 'components/form/Form'
+
+import authActions from 'store/modules/auth'
+import authSelectors from 'store/selectors/auth'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,16 +26,69 @@ const SCHEMA = [{
   id: 'email',
   title: 'Email',
   helperText: 'Enter your email address',
+  validate: {
+    type: 'string',
+    methods: [
+      ['required', 'The email is required'],
+      ['email', 'Must be a valid email address'],
+    ]
+  }
 }, {
   id: 'password',
   title: 'Password',
   helperText: 'Enter your password',
+  inputProps: {
+    type: 'password',
+  },
+  validate: {
+    type: 'string',
+    methods: [
+      ['required', 'The password is required'],
+    ]
+  }
 }]
+
+const HANDLERS = {
+  // validate: (values) => {
+  //   const errors = {}
+  //   if(values.email == 'a') errors.password = 'APPLES'
+  //   return errors
+  // },
+  // value: ({
+  //   name,
+  //   values,
+  //   value,
+  // }) => {
+  //   if(name == 'password' && values.email == 'a') return 'HELLO'
+  //   return value
+  // },
+  // disabled: ({
+  //   name,
+  //   values,
+  //   value,
+  // }) => {
+  //   return name == 'password' && values.email == 'b'
+  // },
+  // hidden: ({
+  //   name,
+  //   values,
+  //   value,
+  // }) => {
+  //   return name == 'password' && values.email == 'a'
+  // },
+}
 
 const Login = ({
 
 }) => {
   const classes = useStyles()
+  const dispatch = useDispatch()
+  const loading = useSelector(authSelectors.login.loading)
+  const error = useSelector(authSelectors.login.error)
+
+  const onLogin = useCallback((payload) => {
+    dispatch(authActions.login(payload))
+  })
 
   return (
     <div className={ classes.root }>
@@ -41,11 +98,13 @@ const Login = ({
         </Typography>
         <Form
           schema={ SCHEMA }
+          handlers={ HANDLERS }
+          error={ error }
           initialValues={{
             email: '',
             password: '',
           }}
-          onSubmit={ (values) => console.log(values) }
+          onSubmit={ onLogin }
         >
           {
             ({
@@ -57,7 +116,7 @@ const Login = ({
                   <Button
                     variant="contained"
                     color="primary"
-                    disabled={ isValid ? false : true }
+                    disabled={ loading || !isValid }
                     onClick={ onSubmit }
                   >
                     Login

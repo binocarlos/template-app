@@ -80,3 +80,13 @@ export const routeParamId = createSelector(
 
 export const DEFAULT_OBJECT = {}
 export const DEFAULT_ARRAY = []
+
+export const networkGroup = (prefix, names) => {
+  return names.reduce((all, name) => {
+    all[name] = {
+      error: state => state.network.errors[`${prefix}/${name}`],
+      loading: state => state.network.loading[`${prefix}/${name}`],
+    }
+    return all
+  }, {})
+}

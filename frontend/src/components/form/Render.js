@@ -1,5 +1,5 @@
 import React from 'react'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import classnames from 'classnames'
 import { Field } from 'formik'
 import dotty from 'dotty'
@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import utils from './utils'
 
-const useStyles = makeStyles(theme => createStyles({
+const useStyles = makeStyles(theme => ({
   errorContainer: {
     marginTop: theme.spacing(2),
   },
@@ -23,7 +23,10 @@ const useStyles = makeStyles(theme => createStyles({
   },
   fullHeight: {
     height: '100%',
-  }
+  },
+  mainError: {
+    padding: theme.spacing(1),
+  },
 }))
 
 const FormWrapperItem = ({
@@ -32,8 +35,7 @@ const FormWrapperItem = ({
   errors,
   touched,
   onSetFieldValue,
-  handlers,
-  handlerContext,
+  handlers,  
 }) => {
 
   const fieldError = dotty.get(errors, item.id)
@@ -49,7 +51,6 @@ const FormWrapperItem = ({
       touched={ fieldTouched }
       onSetFieldValue={ onSetFieldValue }
       handlers={ handlers }
-      handlerContext={ handlerContext }
     />
   )
 }
@@ -62,7 +63,6 @@ const FormWrapperRow = ({
   touched,
   onSetFieldValue,
   handlers,
-  handlerContext,
 }) => {
   const classes = useStyles()
   if(typeof(row) === 'string') {
@@ -90,21 +90,35 @@ const FormWrapperRow = ({
   }
   else if (row.constructor === Array) {
     const colSize = Math.floor(12 / row.length)
-    return row.map((item, i) => (
-      <Grid item xs={ 12 } sm={ colSize } key={ rowKey + '-' + i }>
-        <FormWrapperItem
-          item={ item }
-          values={ values }
-          errors={ errors }
-          touched={ touched }
-          onSetFieldValue={ onSetFieldValue }
-          handlers={ handlers }
-          handlerContext={ handlerContext }
-        />
-      </Grid>
-    ))
+    return row
+      .filter(item => {
+        if(!handlers.hidden) return true
+        return handlers.hidden({
+          name: item.id,
+          values,
+        }) ? false : true
+      })
+      .map((item, i) => (
+        <Grid item xs={ 12 } sm={ colSize } key={ rowKey + '-' + i }>
+          <FormWrapperItem
+            item={ item }
+            values={ values }
+            errors={ errors }
+            touched={ touched }
+            onSetFieldValue={ onSetFieldValue }
+            handlers={ handlers }
+          />
+        </Grid>
+      ))
   }
   else {
+    if(handlers.hidden && handlers.hidden({
+      name: row.id,
+      values,
+    })) {
+      return null
+    }
+    
     return (
       <Grid item xs={12} key={ rowKey }>
         <FormWrapperItem
@@ -114,7 +128,6 @@ const FormWrapperRow = ({
           touched={ touched }
           onSetFieldValue={ onSetFieldValue }
           handlers={ handlers }
-          handlerContext={ handlerContext }
         />
       </Grid>
     )
@@ -123,7 +136,7 @@ const FormWrapperRow = ({
 
 const FormRender = ({
   schema,
-  spacing = 2,
+  handlers,
   error,
   values,
   errors,
@@ -131,9 +144,8 @@ const FormRender = ({
   showErrors,
   fullHeight,
   onSetFieldValue,
-  handlers,
-  handlerContext,
 }) => {
+
   const classes = useStyles()
  
   return (
@@ -157,18 +169,19 @@ const FormRender = ({
                 touched={ touched }
                 onSetFieldValue={ onSetFieldValue }
                 handlers={ handlers }
-                handlerContext={ handlerContext }
               />
             )
           })
         }
         {
           error && (
-            <FormHelperText
-              error={ true }
-            >
-              { error }
-            </FormHelperText>
+            <div className={ classes.mainError }>
+              <FormHelperText
+                error={ true }
+              >
+                { error }
+              </FormHelperText>
+            </div>
           )
         }
       </Grid>

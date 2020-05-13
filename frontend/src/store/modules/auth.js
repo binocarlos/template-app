@@ -1,3 +1,4 @@
+import Promise from 'bluebird'
 import CreateReducer from '../utils/createReducer'
 import CreateActions from '../utils/createActions'
 
@@ -7,11 +8,16 @@ import {
   handlers,
 } from '../utils/api'
 
+import networkWrapper from '../utils/networkWrapper'
+
+
+
 import {
   REFRESH_TOKEN_DELAY,
 } from 'settings'
 
-const prefix = 'snackbar'
+const prefix = 'auth'
+const wrapper = networkWrapper.factory(prefix)
 
 const initialState = {
   loaded: false,
@@ -62,6 +68,14 @@ const sideEffects = {
   refreshToken: () => (dispatch, getState) => {
     console.log('refresh token')
   },
+
+  login: ({
+    email,
+    password,
+  }) => wrapper('login', async (dispatch, getState) => {
+    await Promise.delay(2000)
+    throw new Error('test')
+  }),
 }
 
 const reducer = CreateReducer({

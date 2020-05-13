@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import { Formik } from 'formik'
 import utils from './utils'
 import Validate from './validate'
@@ -6,6 +6,7 @@ import Validate from './validate'
 const FormWrapper = ({
   schema,
   initialValues,
+  handlers = {},
   children = () => {},
   onSubmit,
 }) => {
@@ -19,12 +20,12 @@ const FormWrapper = ({
       initialValues={ useInitialValues }
       validationSchema={ validationSchema }
       validateOnMount
+      validate={ handlers.validate }
       onSubmit={ onSubmit }
     >
       {
         ({
           handleSubmit,
-          setFieldValue,
           isValid,
           values,
           errors,
@@ -44,7 +45,6 @@ const FormWrapper = ({
                   showErrors,
                   touched,
                   onSubmit: submitWrapper,
-                  onSetFieldValue: setFieldValue,
                 })
               }
             </form>
