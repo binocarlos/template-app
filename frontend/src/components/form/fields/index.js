@@ -4,10 +4,6 @@ import RadioField from './Radio'
 import CheckboxField from './Checkbox'
 import MultipleCheckboxField from './MultipleCheckbox'
 import SelectField from './Select'
-import ColorPickerField from './ColorPickerField'
-import Image from './Image'
-import Sorting from './Sorting'
-import HiddenItems from './HiddenItems'
 
 const fields = {
   text: TextField,
@@ -16,10 +12,6 @@ const fields = {
   checkbox: CheckboxField,
   multipleCheckbox: MultipleCheckboxField,
   select: SelectField,
-  color: ColorPickerField,
-  image: Image,
-  sorting: Sorting,
-  hiddenItems: HiddenItems,
 }
 
 export const defaultValues = {
@@ -29,12 +21,6 @@ export const defaultValues = {
   checkbox: false,
   multipleCheckbox: {},
   select: '',
-  color: {
-    color: ''
-  },
-  image: null,
-  sorting: {},
-  hiddenItems: {},
 }
 
 export default fields

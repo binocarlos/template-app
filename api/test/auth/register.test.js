@@ -52,7 +52,7 @@ harness('auth:register', async (t, {
 
   // re-generate token - not logged in
   const noTokenRes = await getClient().post('/auth/token')
-  t.equal(noTokenRes.status, 403, `403 status`)
+  t.equal(noTokenRes.status, 401, `403 status`)
 
   // new token status
   const newTokenStatusRes = await getClient({

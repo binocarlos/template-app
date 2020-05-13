@@ -2,12 +2,14 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import Route from './Route'
 import RouteContext from './RouteContext'
-import Loading from '../components/system/Loading'
+import Loading from 'components/system/Loading'
 
-import routerSelectors from '../store/selectors/router'
+import routerSelectors from 'store/selectors/router'
 
 import Layout from 'pages/Layout'
 import Home from 'pages/Home'
+import Login from 'pages/Login'
+import Register from 'pages/Register'
 import NotFound from 'pages/NotFound'
 import Help from 'pages/Help'
 
@@ -21,6 +23,7 @@ const Router = ({
       <Loading />
     )
   }
+
   return (
     <RouteContext.Provider value={ route.name }>
       <Layout>
@@ -29,6 +32,12 @@ const Router = ({
         </Route>
         <Route segment="home" exact>
           <Home />
+        </Route>
+        <Route segment="login" exact>
+          <Login />
+        </Route>
+        <Route segment="register" exact>
+          <Register />
         </Route>
         <Route segment="help" exact>
           <Help />

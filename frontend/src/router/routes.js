@@ -4,6 +4,14 @@ const routes = [
     path: '/',
   },
   {
+    name: 'login',
+    path: '/login',
+  },
+  {
+    name: 'register',
+    path: '/register',
+  },
+  {
     name: 'help',
     path: '/help',
   },

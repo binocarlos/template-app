@@ -29,13 +29,13 @@ const AuthRoutes = ({
         res.json(result)
       }
       else {
-        res.status(403)
+        res.status(401)
         res.json({
           error: `incorrect details`
         })
       }
     } catch(e) {
-      res.status(403)
+      res.status(401)
       res.json({
         error: e.toString()
       })

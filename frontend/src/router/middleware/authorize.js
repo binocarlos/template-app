@@ -3,7 +3,22 @@ import findRoutes from '../utils/findRoutes'
 
 import snackbarActions from 'store/modules/snackbar'
 import routerActions from 'store/modules/router'
+import authSelectors from 'store/selectors/auth'
 
+const AUTH_HANDLERS = {
+  user: (store) => {
+    const user = authSelectors.data(store.getState())
+    return user ?
+      null :
+      'login'
+  },
+  guest: (store) => {
+    const user = authSelectors.data(store.getState())
+    return user ?
+      'home' :
+      null
+  },
+}
 /*
 
   run an authorize function on the route if present
@@ -33,9 +48,13 @@ const authorizeRoute = (routes) => (router, dependencies) => (toState, fromState
     return
   }
 
-  const authorizeHandler = authorizeHandlers[0]
+  const authorizeHandler = typeof(authorizeHandlers[0] == 'string') ?
+    AUTH_HANDLERS[authorizeHandlers[0]] :
+    authorizeHandlers[0]
 
-  const redirectTo = authorizeHandler(store.getState())
+  if(!authorizeHandler) return done()
+
+  const redirectTo = authorizeHandler(store)
 
   if(!redirectTo) {
     done()

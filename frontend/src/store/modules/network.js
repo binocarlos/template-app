@@ -4,11 +4,13 @@ import CreateActions from '../utils/createActions'
 const prefix = 'network'
 
 const initialState = {
+  globalLoading: null,
   loading: {},
   errors: {},
 }
 
 const reducers = {
+  setGlobalLoading: (state, action) => state.globalLoading = action.payload,
   setLoading: (state, action) => {
     const {
       name,

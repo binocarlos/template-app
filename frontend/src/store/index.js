@@ -24,7 +24,7 @@ const Store = (router, initialState = {}) => {
   )
 
   router.setDependency('store', store)
-  router.start()
+  //router.start()
 
   if (module.hot) {
     module.hot.accept('./reducer', () => {

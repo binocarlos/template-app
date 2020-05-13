@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 
 import AppBar from '@material-ui/core/AppBar'
@@ -9,8 +10,11 @@ import SideMenu from 'components/layout/SideMenu'
 import AppBarMenu from 'components/layout/AppBarMenu'
 import Snackbar from 'components/system/Snackbar'
 
+import authSelectors from 'store/selectors/auth'
+
 import {
-  MENU,
+  GUEST_MENU,
+  USER_MENU,
 } from 'settings'
 
 const useStyles = makeStyles(theme => ({
@@ -37,6 +41,12 @@ const Layout = ({
   children,
 }) => {
   const classes = useStyles()
+
+  const user = useSelector(authSelectors.data)
+
+  const MENU = user ?
+    USER_MENU :
+    GUEST_MENU
 
   return (
     <div className={ classes.root }>
