@@ -1,3 +1,4 @@
+import Promise from 'bluebird'
 import transitionPath from 'router5-transition-path'
 import findRoutes from '../utils/findRoutes'
 
@@ -6,7 +7,7 @@ import findRoutes from '../utils/findRoutes'
   trigger actions when routes become active
 
 */
-const triggerRoute = (routes) => (router, dependencies) => (toState, fromState, done) => {
+const triggerRoute = (routes) => (router, dependencies) => async (toState, fromState, done) => {
 
   const { toActivate } = transitionPath(toState, fromState)
   const { store } = dependencies
@@ -20,9 +21,10 @@ const triggerRoute = (routes) => (router, dependencies) => (toState, fromState, 
   }, [])
 
   const params = toState.params
-  allTriggers.forEach(trigger => trigger(store, params))
 
-  done()
+  await Promise.each(allTriggers, async trigger => {
+    await trigger(store, params)
+  })
 }
 
 export default triggerRoute
