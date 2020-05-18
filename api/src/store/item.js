@@ -1,14 +1,14 @@
-const BookingFormStore = ({
+const ItemStore = ({
   knex,
 }) => {
  
   const list = ({
     userid,
   } = {}) => {
-    if(!userid) throw new Error(`userid required for bookingform.list`)
+    if(!userid) throw new Error(`userid required for item.list`)
     return knex
       .select()
-      .from('bookingform')
+      .from('item')
       .where({
         useraccount: userid,
       })
@@ -18,8 +18,8 @@ const BookingFormStore = ({
     userid,
     id,
   } = {}) => {
-    if(!id) throw new Error(`id required for bookingform.get`)
-    return knex('bookingform')
+    if(!id) throw new Error(`id required for item.get`)
+    return knex('item')
       .where({
         useraccount: userid,
         id,
@@ -31,7 +31,7 @@ const BookingFormStore = ({
     userid,
     data,
   }) => 
-    knex('bookingform')
+    knex('item')
       .insert(Object.assign({}, data, {
         useraccount: userid,
       }))
@@ -43,8 +43,8 @@ const BookingFormStore = ({
     userid,
     data,
   } = {}) => {
-    if(!id) throw new Error(`id required for bookingform.update`)
-    return knex('bookingform')
+    if(!id) throw new Error(`id required for item.update`)
+    return knex('item')
       .where({
         useraccount: userid,
         id,
@@ -58,8 +58,8 @@ const BookingFormStore = ({
     id,
     userid,
   }) => {
-    if(!id) throw new Error(`id required for bookingform.delete`)
-    return knex('bookingform')
+    if(!id) throw new Error(`id required for item.delete`)
+    return knex('item')
       .where({
         useraccount: userid,
         id,
@@ -78,4 +78,4 @@ const BookingFormStore = ({
   }
 }
 
-module.exports = BookingFormStore
+module.exports = ItemStore

@@ -9,7 +9,7 @@ import networkWrapper from '../utils/networkWrapper'
 import routerActions from './router'
 import snackbarActions from './snackbar'
 
-const prefix = 'bookingforms'
+const prefix = 'items'
 const wrapper = networkWrapper.factory(prefix)
 
 const initialState = {
@@ -25,26 +25,26 @@ const reducers = {
 const sideEffects = {
 
   load: () => wrapper('load', async (dispatch, getState) => {
-    const data = await handlers.get(`/bookingforms`)
+    const data = await handlers.get(`/items`)
     await dispatch(actions.setData(data))
   }),
 
   save: (id, payload) => wrapper('save', async (dispatch, getState) => {
     if(id == 'new') {
-      await handlers.post(`/bookingforms`, payload)
+      await handlers.post(`/items`, payload)
     }
     else {
-      await handlers.put(`/bookingforms/${id}`, payload)
+      await handlers.put(`/items/${id}`, payload)
     }
     await dispatch(actions.load())
-    dispatch(snackbarActions.setSuccess(`booking form ${id == 'new' ? 'created' : 'updated'}`))
-    dispatch(routerActions.navigateTo('admin.bookingforms.list'))
+    dispatch(snackbarActions.setSuccess(`item ${id == 'new' ? 'created' : 'updated'}`))
+    dispatch(routerActions.navigateTo('admin.items.list'))
   }),
 
   delete: (id) => wrapper('update', async (dispatch, getState) => {
-    await handlers.delete(`/bookingforms/${id}`)
+    await handlers.delete(`/items/${id}`)
     await dispatch(actions.load())
-    dispatch(snackbarActions.setSuccess(`booking form deleted`))
+    dispatch(snackbarActions.setSuccess(`item deleted`))
     return true
   }),
 

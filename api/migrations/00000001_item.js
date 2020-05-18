@@ -1,6 +1,6 @@
 const up = (knex) => {
   return Promise.all([
-    knex.schema.createTable('bookingform', function(table) {
+    knex.schema.createTable('item', function(table) {
       table.specificType('id', 'serial primary key not null')
       table.specificType('created_at', 'timestamp default now()')
       table.integer('useraccount')
@@ -10,7 +10,6 @@ const up = (knex) => {
         .onDelete('cascade')
       table.string('name').notNullable()
       table.string('type').notNullable()
-      table.text('config').notNullable()
       table.json('meta')
     })
   ])
@@ -18,7 +17,7 @@ const up = (knex) => {
 
 const down = (knex) => {
   return Promise.all([
-    knex.schema.dropTable('bookingform')
+    knex.schema.dropTable('item')
   ])
 }
 

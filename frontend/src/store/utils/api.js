@@ -1,16 +1,16 @@
 import axios from 'axios'
 import { API } from 'settings'
 
-export const setToken = token => {
-  axios.defaults.headers.common = {
-    Authorization: `Bearer ${token}`,
-  }
+export const getHTTPTokenHeaders = token => ({
+  Authorization: token ? `Bearer ${token}` : '',
+})
+
+export const setHTTPToken = token => {
+  axios.defaults.headers.common = getHTTPTokenHeaders(token)
 }
 
-export const unsetToken = () => {
-  axios.defaults.headers.common = {
-    Authorization: '',
-  }
+export const unsetHTTPToken = () => {
+  axios.defaults.headers.common = getHTTPTokenHeaders()
 }
 
 // pluck an error message from the response body if present

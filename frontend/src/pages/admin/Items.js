@@ -8,8 +8,8 @@ import Table from 'components/table/SimpleTable'
 import Window from 'components/dialog/Window'
 
 import routerActions from 'store/modules/router'
-import bookingformActions from 'store/modules/bookingforms'
-import bookingformSelectors from 'store/selectors/bookingforms'
+import itemActions from 'store/modules/item'
+import itemSelectors from 'store/selectors/item'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,25 +33,25 @@ const useStyles = makeStyles(theme => ({
 const FIELDS = [{
   title: 'name',
   name: 'name',
-},{
+}, {
   title: 'type',
   name: 'type',
 }]
 
-const BookingForms = ({
+const Items = ({
 
 }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const [ deletingItem, setDeletingItem ] = useState(null)
-  const data = useSelector(bookingformSelectors.data)
+  const data = useSelector(itemSelectors.data)
 
   const onAdd = useCallback(() => {
-    dispatch(routerActions.navigateTo('admin.bookingforms.edit', {id: 'new'}))
+    dispatch(routerActions.navigateTo('admin.items.edit', {id: 'new'}))
   })
 
   const onEdit = useCallback((item) => {
-    dispatch(routerActions.navigateTo('admin.bookingforms.edit', {id: item.id}))
+    dispatch(routerActions.navigateTo('admin.items.edit', {id: item.id}))
   })
 
   const onCancelDelete = useCallback(() => {
@@ -59,7 +59,7 @@ const BookingForms = ({
   })
 
   const onConfirmDelete = useCallback(async () => {
-    const result = await dispatch(bookingformActions.delete(deletingItem.id))
+    const result = await dispatch(itemActions.delete(deletingItem.id))
     if(result) {
       setDeletingItem(null)
     }
@@ -68,11 +68,11 @@ const BookingForms = ({
   ])
 
   const tableData = useMemo(() => {
-    return data.map(bookingform => {
+    return data.map(item => {
       return {
-        id: bookingform.id,
-        name: bookingform.name,
-        type: bookingform.type,
+        id: item.id,
+        name: item.name,
+        type: item.type,
       }
     })
   }, [
@@ -110,7 +110,7 @@ const BookingForms = ({
       <div className={ classes.toolbar }>
         <div className={ classes.title }>
           <Typography gutterBottom variant="h6">
-            Booking Forms
+            Items
           </Typography>
         </div>
         <div className={ classes.addButton }>
@@ -120,7 +120,7 @@ const BookingForms = ({
             size="small"
             onClick={ onAdd }
           >
-            Add Booking Form
+            Add Item
           </Button>
         </div>
       </div>
@@ -142,7 +142,7 @@ const BookingForms = ({
             onSubmit={ onConfirmDelete }
           >
             <Typography>
-              Are you absolutely sure you want to delete the { deletingItem.name } booking form?
+              Are you absolutely sure you want to delete the { deletingItem.name } item?
             </Typography>
           </Window>
         )
@@ -151,4 +151,4 @@ const BookingForms = ({
   )
 }
 
-export default BookingForms
+export default Items

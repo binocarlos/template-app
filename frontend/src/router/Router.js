@@ -12,11 +12,11 @@ import NotFound from 'pages/NotFound'
 import Help from 'pages/Help'
 
 import AdminLogin from 'pages/admin/Login'
+import AdminLogout from 'pages/admin/Logout'
 import AdminRegister from 'pages/admin/Register'
-import AdminDashboard from 'pages/admin/Dashboard'
 import AdminSettings from 'pages/admin/Settings'
-import AdminBookingForms from 'pages/admin/BookingForms'
-import AdminBookingForm from 'pages/admin/BookingForm'
+import AdminItems from 'pages/admin/Items'
+import AdminItem from 'pages/admin/Item'
 
 const Router = ({
 
@@ -45,21 +45,21 @@ const Router = ({
           <Route segment="login" exact>
             <AdminLogin />
           </Route>
+          <Route segment="logout" exact>
+            <AdminLogout />
+          </Route>
           <Route segment="register" exact>
             <AdminRegister />
-          </Route>
-          <Route segment="dashboard" exact>
-            <AdminDashboard />
           </Route>
           <Route segment="settings" exact>
             <AdminSettings />
           </Route>
-          <Route segment="bookingforms">
+          <Route segment="items">
             <Route segment="list" exact>
-              <AdminBookingForms />
+              <AdminItems />
             </Route>
             <Route segment="edit" exact>
-              <AdminBookingForm />
+              <AdminItem />
             </Route>
           </Route>
         </Route>

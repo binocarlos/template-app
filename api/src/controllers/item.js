@@ -1,17 +1,17 @@
-const BookingFormController = ({
+const ItemController = ({
   store,
 }) => {
   
   const list = async ({
     userid,
-  }) => store.bookingform.list({
+  }) => store.item.list({
     userid,
   })
 
   const get = async ({
     userid,
     id,
-  }) => store.bookingform.get({
+  }) => store.item.get({
     userid,
     id,
   })
@@ -19,7 +19,7 @@ const BookingFormController = ({
   const create = async ({
     userid,
     data,
-  }) => store.bookingform.create({
+  }) => store.item.create({
     userid,
     data,
   })
@@ -28,7 +28,7 @@ const BookingFormController = ({
     userid,
     id,
     data,
-  }) => store.bookingform.update({
+  }) => store.item.update({
     userid,
     id,
     data,
@@ -37,7 +37,7 @@ const BookingFormController = ({
   const del = async ({
     userid,
     id,
-  }) => store.bookingform.delete({
+  }) => store.item.delete({
     userid,
     id,
   })
@@ -51,4 +51,4 @@ const BookingFormController = ({
   }
 }
 
-module.exports = BookingFormController
+module.exports = ItemController

@@ -50,11 +50,21 @@ const AuthRoutes = ({
     res.json(result)
   }
 
+  const updateSettings = async (req, res) => {
+    const result = await controllers.auth.updateMeta({
+      id: req.user.id,
+      data: req.body,
+    })
+    res.status(201)
+    res.json(result)
+  }
+
   return {
     status: asyncHandler(status),
     register: asyncHandler(register),
     login: asyncHandler(login),
-    getToken: asyncHandler(getToken), 
+    getToken: asyncHandler(getToken),
+    updateSettings: asyncHandler(updateSettings), 
   }
 }
 

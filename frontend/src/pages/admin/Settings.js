@@ -1,10 +1,14 @@
 import React, { useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 
 import Form from 'components/form/Form'
+
+import authActions from 'store/modules/auth'
+import authSelectors from 'store/selectors/auth'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -39,16 +43,22 @@ const HANDLERS = {}
 const Settings = ({
 
 }) => {
+  const dispatch = useDispatch()
   const classes = useStyles()
   
   const loading = false
   const error = null
 
   const onSubmit = useCallback((payload) => {
-    console.log('--------------------------------------------')
-    console.log('--------------------------------------------')
-    console.dir(payload)
+    dispatch(authActions.updateSettings({payload}))
   })
+
+  const userData = useSelector(authSelectors.data)
+
+  const initialValues = Object.assign({}, {
+    color: {},
+    logo: null,
+  }, userData.meta)
 
   return (
     <div className={ classes.root }>
@@ -60,9 +70,7 @@ const Settings = ({
           schema={ SCHEMA }
           handlers={ HANDLERS }
           error={ error }
-          initialValues={{
-            color: {},
-          }}
+          initialValues={initialValues }
           onSubmit={ onSubmit }
         >
           {

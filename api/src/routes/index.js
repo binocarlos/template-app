@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const AuthAccess = require('../authentication/authAccess')
 const JWTAuthentication = require('../authentication/jwt')
 const AuthRoutes = require('./auth')
-const BookingFormRoutes = require('./bookingform')
+const ItemRoutes = require('./item')
 const StorageRoutes = require('./storage')
 
 const Routes = ({
@@ -20,7 +20,7 @@ const Routes = ({
     controllers,
   })
 
-  const bookingform = BookingFormRoutes({
+  const item = ItemRoutes({
     controllers,
   })
 
@@ -37,15 +37,16 @@ const Routes = ({
   app.post('/auth/register', auth.register)
   app.post('/auth/login', auth.login)
   app.post('/auth/token', authAccess.loggedIn, auth.getToken)
+  app.put('/auth/settings', authAccess.loggedIn, auth.updateSettings)
 
   app.get('/storage/download', storage.download)
   app.post('/storage/upload', authAccess.loggedIn, storage.upload)
 
-  app.get('/bookingforms', authAccess.loggedIn, bookingform.list)
-  app.get('/bookingforms/:id', authAccess.loggedIn, bookingform.get)
-  app.post('/bookingforms', authAccess.loggedIn, bookingform.create)
-  app.put('/bookingforms/:id', authAccess.loggedIn, bookingform.update)
-  app.delete('/bookingforms/:id', authAccess.loggedIn, bookingform.delete)
+  app.get('/items', authAccess.loggedIn, item.list)
+  app.get('/items/:id', authAccess.loggedIn, item.get)
+  app.post('/items', authAccess.loggedIn, item.create)
+  app.put('/items/:id', authAccess.loggedIn, item.update)
+  app.delete('/items/:id', authAccess.loggedIn, item.delete)
 
   return app
 }

@@ -1,5 +1,5 @@
 import authSelectors from 'store/selectors/auth'
-import bookingFormActions from 'store/modules/bookingforms'
+import itemActions from 'store/modules/item'
 
 import {
   ROUTE_LOGGED_IN,
@@ -27,6 +27,12 @@ const routes = [
   {
     name: 'admin',
     path: '/admin',
+    redirect: (state) => {
+      const user = authSelectors.data(state)
+      return user ?
+        'admin.items' :
+        'admin.login'
+    },
     children: [
       {
         name: 'login',
@@ -34,14 +40,13 @@ const routes = [
         auth: auth.guest,
       },
       {
+        name: 'logout',
+        path: '/logout',
+      },
+      {
         name: 'register',
         path: '/register',
         auth: auth.guest,
-      },
-      {
-        name: 'dashboard',
-        path: '/dashboard',
-        auth: auth.user,
       },
       {
         name: 'settings',
@@ -49,11 +54,12 @@ const routes = [
         auth: auth.user,
       },
       {
-        name: 'bookingforms',
-        path: '/bookingforms',
+        name: 'items',
+        path: '/items',
         auth: auth.user,
-        trigger: (store, params) => {
-          store.dispatch(bookingFormActions.load())
+        redirect: 'admin.items.list',
+        trigger: async (store, params) => {
+          await store.dispatch(itemActions.load())
         },
         children: [{
           name: 'list',

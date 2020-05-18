@@ -7,8 +7,8 @@ import Paper from '@material-ui/core/Paper'
 
 import Form from 'components/form/Form'
 
-import bookingformActions from 'store/modules/bookingforms'
-import bookingformSelectors from 'store/selectors/bookingforms'
+import itemActions from 'store/modules/item'
+import itemSelectors from 'store/selectors/item'
 import routerActions from 'store/modules/router'
 import routerSelectors from 'store/selectors/router'
 
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 const SCHEMA = [{
   id: 'name',
   title: 'Name',
-  helperText: 'Enter the name of the booking form',
+  helperText: 'Enter the name of the booking item',
   validate: {
     type: 'string',
     methods: [
@@ -41,56 +41,43 @@ const SCHEMA = [{
 }, {
   id: 'type',
   title: 'Type',
-  helperText: 'Choose what type of booking this is',
+  helperText: 'Choose the type of the item',
   component: 'radio',
   row: true,
   options: [{
-    title: 'Group Booking',
-    value: 'group',
+    title: 'Large',
+    value: 'large',
   }, {
-    title: 'Ticket Booking',
-    value: 'ticket',
+    title: 'Small',
+    value: 'small',
   }],
-}, {
-  id: 'config',
-  title: 'Config YAML',
-  helperText: 'The config YAML for the booking form',
-  rows: 10,
-  component: 'textarea',
-  validate: {
-    type: 'string',
-    methods: [
-      ['required', 'The config is required'],
-    ]
-  }
 }]
 
 const HANDLERS = {}
 
 const INITIAL_VALUES = {
   name: '',
-  type: 'group',
-  config: '',
+  type: 'large',
 }
 
-const BookingForm = ({
+const Item = ({
 
 }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
 
-  const loading = useSelector(bookingformSelectors.save.loading)
-  const error = useSelector(bookingformSelectors.save.error)
+  const loading = useSelector(itemSelectors.save.loading)
+  const error = useSelector(itemSelectors.save.error)
   
   const { id } = useSelector(routerSelectors.params)
-  const data = useSelector(bookingformSelectors.editItem)
+  const data = useSelector(itemSelectors.editItem)
 
   const onCancel = useCallback(() => {
-    dispatch(routerActions.navigateTo('admin.bookingforms.list'))
+    dispatch(routerActions.navigateTo('admin.items.list'))
   })
 
   const onSubmit = useCallback((payload) => {
-    dispatch(bookingformActions.save(id, payload))
+    dispatch(itemActions.save(id, payload))
   }, [
     id,
   ])
@@ -99,7 +86,7 @@ const BookingForm = ({
     <div className={ classes.root }>
       <Paper className={ classes.paper }>
         <Typography gutterBottom variant="h6">
-          Booking Form
+          Item
         </Typography>
         <Form
           schema={ SCHEMA }
@@ -140,4 +127,4 @@ const BookingForm = ({
   )
 }
 
-export default BookingForm
+export default Item

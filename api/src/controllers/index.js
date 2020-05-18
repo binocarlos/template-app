@@ -1,5 +1,5 @@
 const Auth = require('./auth')
-const BookingForm = require('./bookingform')
+const Item = require('./item')
 const Storage = require('./storage')
 
 const Controllers = ({
@@ -14,7 +14,7 @@ const Controllers = ({
     getController,
   })
 
-  const bookingform = BookingForm({
+  const item = Item({
     store,
     getController,
   })
@@ -26,7 +26,7 @@ const Controllers = ({
 
   controllers = {
     auth,
-    bookingform,
+    item,
     storage,
   }
 

@@ -6,7 +6,7 @@ import {
 
 import router from './router'
 
-const data = state => state.bookingforms.data
+const data = state => state.item.data
 const editItem = createSelector(
   data,
   router.route,
@@ -16,7 +16,7 @@ const editItem = createSelector(
 const selectors = {
   data,
   editItem,
-  ...networkGroup('bookingforms', [
+  ...networkGroup('item', [
     'load',
     'save',
     'delete',

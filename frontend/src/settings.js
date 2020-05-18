@@ -3,15 +3,12 @@ import authActions from 'store/modules/auth'
 export const REFRESH_TOKEN_DELAY = 1000 * 60
 export const API = '/api/v1'
 
-export const ROUTE_LOGGED_IN = 'admin.dashboard'
+export const ROUTE_LOGGED_IN = 'admin.items'
 export const ROUTE_LOGGED_OUT = 'admin.login'
 
 export const ADMIN_USER_MENU = [{
   title: 'Home',
-  link: 'admin.dashboard',
-}, {
-  title: 'Booking Forms',
-  link: 'admin.bookingforms.list',
+  link: 'admin.items',
 }, {
   title: 'Settings',
   link: 'admin.settings',

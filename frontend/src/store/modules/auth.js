@@ -3,8 +3,9 @@ import CreateReducer from '../utils/createReducer'
 import CreateActions from '../utils/createActions'
 
 import {
-  setToken,
-  unsetToken,
+  setHTTPToken,
+  unsetHTTPToken,
+  getHTTPTokenHeaders,
   handlers,
 } from '../utils/api'
 
@@ -33,31 +34,41 @@ const reducers = {
   },
 }
 
-//localStorage.setItem('token', token)
+const setToken = (token) => {
+  setHTTPToken(token)
+  localStorage.setItem('token', token)
+}
+
+const unsetToken = () => {
+  unsetHTTPToken()
+  localStorage.setItem('token', '')
+}
 
 let refreshTokenLoop = null
 
 const sideEffects = {
 
   authenticate: (token) => async (dispatch, getState) => {
-    let user
-    try {
-      if(!token) {
-        token = localStorage.getItem('token')
+    let user = null
+    token = token || localStorage.getItem('token')
+    if(token) {
+      try {
+        user = await handlers.get('/auth/status', null, {
+          headers: getHTTPTokenHeaders(token),
+        })
+      } catch(e) {
+
       }
-      if(token) {
-        localStorage.setItem('token', token)
-        setToken(token)
-        user = await handlers.get('/auth/status')
-        if(user) {
-          dispatch(actions.startTokenLoop())
-        }
-      }
-    } catch(e) {
-      localStorage.setItem('token', '')
-      unsetToken()
     }
-    dispatch(actions.setUser(user))
+    if(user && user.id) {
+      setToken(token)
+      dispatch(actions.startTokenLoop())
+      dispatch(actions.setUser(user))
+    }
+    else {
+      unsetToken()
+      dispatch(actions.setUser(null))
+    }
   },
 
   startTokenLoop: () => (dispatch, getState) => {
@@ -74,9 +85,9 @@ const sideEffects = {
   refreshToken: () => async (dispatch, getState) => {
     try {
       const { token } = await handlers.post('/auth/token')
-      localStorage.setItem('token', token)
       setToken(token)
     } catch(e) {
+      unsetToken()
       dispatch(snackbarActions.setError(`you have been logged out`))
       dispatch(actions.logout())
     }
@@ -110,11 +121,18 @@ const sideEffects = {
     dispatch(routerActions.navigateTo(ROUTE_LOGGED_IN))
   }),
 
-  logout:() => wrapper('logout', async (dispatch, getState) => {
-    localStorage.setItem('token', '')
+  logout: () => wrapper('logout', async (dispatch, getState) => {
     unsetToken()
     dispatch(actions.setUser(null))
     dispatch(routerActions.navigateTo(ROUTE_LOGGED_OUT))
+  }),
+
+  updateSettings: ({
+    payload,
+  }) => wrapper('updateSettings', async (dispatch, getState) => {
+    const result = await handlers.put('/auth/settings', payload)
+    dispatch(actions.setUser(result))
+    dispatch(snackbarActions.setSuccess(`settings updated`))
   }),
 }
 

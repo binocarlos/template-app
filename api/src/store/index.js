@@ -1,5 +1,5 @@
 const Auth = require('./auth')
-const BookingForm = require('./bookingform')
+const Item = require('./item')
 
 const Store = ({
   knex,
@@ -8,14 +8,14 @@ const Store = ({
     knex,
   })
 
-  const bookingform = BookingForm({
+  const item = Item({
     knex,
   })
 
   return {
     knex,
     auth,
-    bookingform,
+    item,
   }
 }
 

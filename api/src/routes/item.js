@@ -1,18 +1,18 @@
 const asyncHandler = require('express-async-handler')
 
-const BookingFormRoutes = ({
+const ItemRoutes = ({
   controllers,
 }) => {
 
   const list = async (req, res) => {
-    const result = await controllers.bookingform.list({
+    const result = await controllers.item.list({
       userid: req.user.id,
     })
     res.json(result)
   }
 
   const get = async (req, res) => {
-    const result = await controllers.bookingform.get({
+    const result = await controllers.item.get({
       userid: req.user.id,
       id: req.params.id
     })
@@ -20,7 +20,7 @@ const BookingFormRoutes = ({
   }
 
   const create = async (req, res) => {
-    const result = await controllers.bookingform.create({
+    const result = await controllers.item.create({
       userid: req.user.id,
       data: req.body,
     })
@@ -28,7 +28,7 @@ const BookingFormRoutes = ({
   }
 
   const update = async (req, res) => {
-    const result = await controllers.bookingform.update({
+    const result = await controllers.item.update({
       userid: req.user.id,
       id: req.params.id,
       data: req.body,
@@ -37,7 +37,7 @@ const BookingFormRoutes = ({
   }
 
   const del = async (req, res) => {
-    const result = await controllers.bookingform.delete({
+    const result = await controllers.item.delete({
       userid: req.user.id,
       id: req.params.id,
     })
@@ -53,4 +53,4 @@ const BookingFormRoutes = ({
   }
 }
 
-module.exports = BookingFormRoutes
+module.exports = ItemRoutes

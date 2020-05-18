@@ -18,6 +18,7 @@ const redirectRoute = (routes) => (router, dependencies) => (toState, fromState,
   if(!activeRoute) return done()
 
   const redirectInfo = activeRoute.redirect
+  const redirectParams = activeRoute.redirectParams || {}
 
   if(!redirectInfo) return done()
 
@@ -40,6 +41,7 @@ const redirectRoute = (routes) => (router, dependencies) => (toState, fromState,
     done({
       redirect: {
         name: redirectTo,
+        params: Object.assign({}, toState.params, redirectParams),
       },
     })
   }
