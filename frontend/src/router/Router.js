@@ -11,12 +11,12 @@ import Home from 'pages/Home'
 import NotFound from 'pages/NotFound'
 import Help from 'pages/Help'
 
-import AdminLogin from 'pages/admin/Login'
-import AdminLogout from 'pages/admin/Logout'
-import AdminRegister from 'pages/admin/Register'
-import AdminSettings from 'pages/admin/Settings'
-import AdminItems from 'pages/admin/Items'
-import AdminItem from 'pages/admin/Item'
+import Login from 'pages/Login'
+import Logout from 'pages/Logout'
+import Register from 'pages/Register'
+import Settings from 'pages/Settings'
+import Items from 'pages/Items'
+import Item from 'pages/Item'
 
 const Router = ({
 
@@ -41,26 +41,24 @@ const Router = ({
         <Route segment="help" exact>
           <Help />
         </Route>
-        <Route segment="admin">
-          <Route segment="login" exact>
-            <AdminLogin />
+        <Route segment="login" exact>
+          <Login />
+        </Route>
+        <Route segment="logout" exact>
+          <Logout />
+        </Route>
+        <Route segment="register" exact>
+          <Register />
+        </Route>
+        <Route segment="settings" exact>
+          <Settings />
+        </Route>
+        <Route segment="items">
+          <Route segment="list" exact>
+            <Items />
           </Route>
-          <Route segment="logout" exact>
-            <AdminLogout />
-          </Route>
-          <Route segment="register" exact>
-            <AdminRegister />
-          </Route>
-          <Route segment="settings" exact>
-            <AdminSettings />
-          </Route>
-          <Route segment="items">
-            <Route segment="list" exact>
-              <AdminItems />
-            </Route>
-            <Route segment="edit" exact>
-              <AdminItem />
-            </Route>
+          <Route segment="edit" exact>
+            <Item />
           </Route>
         </Route>
       </Layout>

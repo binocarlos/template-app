@@ -3,15 +3,15 @@ import authActions from 'store/modules/auth'
 export const REFRESH_TOKEN_DELAY = 1000 * 60
 export const API = '/api/v1'
 
-export const ROUTE_LOGGED_IN = 'admin.items'
-export const ROUTE_LOGGED_OUT = 'admin.login'
+export const ROUTE_LOGGED_IN = 'items'
+export const ROUTE_LOGGED_OUT = 'login'
 
-export const ADMIN_USER_MENU = [{
+export const USER_MENU = [{
   title: 'Home',
-  link: 'admin.items',
+  link: 'items',
 }, {
   title: 'Settings',
-  link: 'admin.settings',
+  link: 'settings',
 }, '-', {
   title: 'Logout',
   handler: (dispatch, getState) => {
@@ -22,36 +22,24 @@ export const ADMIN_USER_MENU = [{
   link: 'help',
 }]
 
-export const ADMIN_GUEST_MENU = [{
+export const GUEST_MENU = [{
   title: 'Home',
   link: 'home',
 }, {
   title: 'Login',
-  link: 'admin.login',
+  link: 'login',
 }, {
   title: 'Register',
-  link: 'admin.register',
+  link: 'register',
 }, '-', {
   title: 'Help',
   link: 'help',
 }]
 
-export const PUBLIC_MENU = [{
-  title: 'Home',
-  link: 'home',
-}, {
-  title: 'Help',
-  link: 'help',
-}, {
-  title: 'Admin Panel',
-  link: 'admin.login',
-}]
-
 const settings = {
   API,
-  PUBLIC_MENU,
-  ADMIN_GUEST_MENU,
-  ADMIN_USER_MENU,
+  USER_MENU,
+  GUEST_MENU,
 }
 
 export default settings

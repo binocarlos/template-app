@@ -29,6 +29,27 @@ const segmentAfter = (state, segment) => {
   return parts[segmentIndex + 1]
 }
 
+const routeNameMap = createSelector(
+  () => routes,
+  routes => {
+    const routeMap = {}
+
+    const addRoutes = (routes, prefixes = []) => {
+      if(!routes) return
+      routes.forEach(route => {
+        const routeParts = prefixes.concat([route.name])
+        const routeName = routeParts.join('.')
+        routeMap[routeName] = route
+        addRoutes(route.children, routeParts)
+      })
+    }
+
+    addRoutes(routes)
+
+    return routeMap
+  }
+)
+
 const selectors = {
   route,
   previousRoute,
@@ -39,6 +60,7 @@ const selectors = {
   segments,
   segment,
   segmentAfter,
+  routeNameMap,
 }
 
 export default selectors

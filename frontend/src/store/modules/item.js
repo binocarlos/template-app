@@ -38,7 +38,7 @@ const sideEffects = {
     }
     await dispatch(actions.load())
     dispatch(snackbarActions.setSuccess(`item ${id == 'new' ? 'created' : 'updated'}`))
-    dispatch(routerActions.navigateTo('admin.items.list'))
+    dispatch(routerActions.navigateTo('items.list'))
   }),
 
   delete: (id) => wrapper('update', async (dispatch, getState) => {

@@ -5,17 +5,14 @@ const required_env = [
   'POSTGRES_DB',
   'POSTGRES_PASSWORD',
   'JWT_SECRET_KEY',
-  'GOOGLE_STORAGE_SERVICE_ACCOUNT',
-  'GOOGLE_STORAGE_BUCKET_NAME',
-  'GOOGLE_STORAGE_BUCKET_PREFIX',
 ]
 
 const decodeBase64_env = [
-  'google_storage_service_account',
+  
 ]
 
 const decodeJSON_env = [
-  'google_storage_service_account',
+  
 ]
 
 const missing_env = required_env.filter(name => process.env[name] ? false : true)
@@ -50,11 +47,6 @@ const args = require('minimist')(process.argv, {
     jwt_expiry: process.env.JWT_EXPIRY || '1h',
     salt_rounds: process.env.SALT_ROUNDS || 10,
 
-    // google storage
-    google_storage_service_account: process.env.GOOGLE_STORAGE_SERVICE_ACCOUNT,
-    google_storage_credentials_file: '/creds.json',
-    google_storage_bucket_name: process.env.GOOGLE_STORAGE_BUCKET_NAME,
-    google_storage_bucket_prefix: process.env.GOOGLE_STORAGE_BUCKET_PREFIX,
   }
 })
 
@@ -89,9 +81,5 @@ decodeBase64_env.forEach(name => {
 decodeJSON_env.forEach(name => {
   args[name] = JSON.parse(args[name])
 })
-
-if(args.google_storage_service_account) {
-  fs.writeFileSync(args.google_storage_credentials_file, JSON.stringify(args.google_storage_service_account, null, 4))
-}
 
 module.exports = args

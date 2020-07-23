@@ -4,8 +4,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
-import { Link } from 'react-router5'
 
+import Link from 'components/widgets/Link'
 import Form from 'components/form/Form'
 
 import authActions from 'store/modules/auth'
@@ -148,7 +148,7 @@ const Register = ({
         </Form>
         <div className={ classes.footer }>
           <Typography variant="body1">
-            <Link routeName="admin.login">Click here</Link> to login...
+            <Link name="login">Click here</Link> to login...
           </Typography>
         </div>
       </Paper>

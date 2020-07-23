@@ -73,7 +73,7 @@ const Item = ({
   const data = useSelector(itemSelectors.editItem)
 
   const onCancel = useCallback(() => {
-    dispatch(routerActions.navigateTo('admin.items.list'))
+    dispatch(routerActions.navigateTo('items.list'))
   })
 
   const onSubmit = useCallback((payload) => {

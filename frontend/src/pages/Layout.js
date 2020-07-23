@@ -16,9 +16,8 @@ import networkSelectors from 'store/selectors/network'
 import routerSelectors from 'store/selectors/router'
 
 import {
-  PUBLIC_MENU,
-  ADMIN_GUEST_MENU,
-  ADMIN_USER_MENU,
+  USER_MENU,
+  GUEST_MENU,
 } from 'settings'
 
 const useStyles = makeStyles(theme => ({
@@ -46,18 +45,13 @@ const Layout = ({
 }) => {
   const classes = useStyles()
 
-  const route = useSelector(routerSelectors.route)
   const user = useSelector(authSelectors.data)
   const globalLoading = useSelector(networkSelectors.globalLoading)
 
-  let MENU = PUBLIC_MENU
-
-  if(route.name.indexOf('admin.') == 0) {
-    MENU = user ?
-      ADMIN_USER_MENU :
-      ADMIN_GUEST_MENU
-  }
-
+  const MENU = user ?
+    USER_MENU :
+    GUEST_MENU
+    
   return (
     <div className={ classes.root }>
       <div className={ classes.appbar }>

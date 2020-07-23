@@ -52,13 +52,20 @@ const NocodeLink = ({
     if(url) return url
     if(path) return path
     const route = routeMap[name]
-    return route.path
+    return route ? route.path : null
   }, [
     name,
     path,
     url,
     routeMap,
   ])
+  if(!href) {
+    return (
+      <span style={{color:'red'}}>
+        route not found: name={ name }, path={ path }
+      </span>
+    )
+  }
   return (
     <a
       href={ href }

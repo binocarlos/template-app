@@ -25,52 +25,40 @@ const routes = [
     path: '/notfound',
   },
   {
-    name: 'admin',
-    path: '/admin',
-    redirect: (state) => {
-      const user = authSelectors.data(state)
-      return user ?
-        'admin.items' :
-        'admin.login'
-    },
-    children: [
-      {
-        name: 'login',
-        path: '/login',
-        auth: auth.guest,
-      },
-      {
-        name: 'logout',
-        path: '/logout',
-      },
-      {
-        name: 'register',
-        path: '/register',
-        auth: auth.guest,
-      },
-      {
-        name: 'settings',
-        path: '/settings',
-        auth: auth.user,
-      },
-      {
-        name: 'items',
-        path: '/items',
-        auth: auth.user,
-        redirect: 'admin.items.list',
-        trigger: async (store, params) => {
-          await store.dispatch(itemActions.load())
-        },
-        children: [{
-          name: 'list',
-          path: '/list',
-        }, {
-          name: 'edit',
-          path: '/edit/:id',
-        }]
-      },
-    ]
+    name: 'login',
+    path: '/login',
+    auth: auth.guest,
   },
+  {
+    name: 'logout',
+    path: '/logout',
+  },
+  {
+    name: 'register',
+    path: '/register',
+    auth: auth.guest,
+  },
+  {
+    name: 'settings',
+    path: '/settings',
+    auth: auth.user,
+  },
+  {
+    name: 'items',
+    path: '/items',
+    auth: auth.user,
+    redirect: 'items.list',
+    trigger: async (store, params) => {
+      await store.dispatch(itemActions.load())
+    },
+    children: [{
+      name: 'list',
+      path: '/list',
+    }, {
+      name: 'edit',
+      path: '/edit/:id',
+    }]
+  },  
 ]
 
 

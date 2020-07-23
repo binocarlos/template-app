@@ -47,11 +47,11 @@ const Items = ({
   const data = useSelector(itemSelectors.data)
 
   const onAdd = useCallback(() => {
-    dispatch(routerActions.navigateTo('admin.items.edit', {id: 'new'}))
+    dispatch(routerActions.navigateTo('items.edit', {id: 'new'}))
   })
 
   const onEdit = useCallback((item) => {
-    dispatch(routerActions.navigateTo('admin.items.edit', {id: item.id}))
+    dispatch(routerActions.navigateTo('items.edit', {id: item.id}))
   })
 
   const onCancelDelete = useCallback(() => {
