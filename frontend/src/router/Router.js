@@ -13,7 +13,6 @@ import Help from 'pages/Help'
 
 import Login from 'pages/Login'
 import Logout from 'pages/Logout'
-import Register from 'pages/Register'
 import Settings from 'pages/Settings'
 import Items from 'pages/Items'
 import Item from 'pages/Item'
@@ -46,9 +45,6 @@ const Router = ({
         </Route>
         <Route segment="logout" exact>
           <Logout />
-        </Route>
-        <Route segment="register" exact>
-          <Register />
         </Route>
         <Route segment="settings" exact>
           <Settings />

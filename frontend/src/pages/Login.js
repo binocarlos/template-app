@@ -26,115 +26,22 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const SCHEMA = [{
-  id: 'email',
-  title: 'Email',
-  helperText: 'Enter your email address',
-  validate: {
-    type: 'string',
-    methods: [
-      ['required', 'The email is required'],
-      ['email', 'Must be a valid email address'],
-    ]
-  }
-}, {
-  id: 'password',
-  title: 'Password',
-  helperText: 'Enter your password',
-  inputProps: {
-    type: 'password',
-  },
-  validate: {
-    type: 'string',
-    methods: [
-      ['required', 'The password is required'],
-    ]
-  }
-}]
-
-const HANDLERS = {
-  // validate: (values) => {
-  //   const errors = {}
-  //   if(values.email == 'a') errors.password = 'APPLES'
-  //   return errors
-  // },
-  // value: ({
-  //   name,
-  //   values,
-  //   value,
-  // }) => {
-  //   if(name == 'password' && values.email == 'a') return 'HELLO'
-  //   return value
-  // },
-  // disabled: ({
-  //   name,
-  //   values,
-  //   value,
-  // }) => {
-  //   return name == 'password' && values.email == 'b'
-  // },
-  // hidden: ({
-  //   name,
-  //   values,
-  //   value,
-  // }) => {
-  //   return name == 'password' && values.email == 'a'
-  // },
-}
-
 const Login = ({
 
 }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const loading = useSelector(authSelectors.login.loading)
-  const error = useSelector(authSelectors.login.error)
-
-  const onLogin = useCallback((payload) => {
-    dispatch(authActions.login(payload))
-  })
-
+ 
   return (
     <div className={ classes.root }>
       <Paper className={ classes.paper }>
-        <Typography gutterBottom variant="h6">
-          Login
-        </Typography>
-        <Form
-          schema={ SCHEMA }
-          handlers={ HANDLERS }
-          error={ error }
-          initialValues={{
-            email: '',
-            password: '',
-          }}
-          onSubmit={ onLogin }
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={ () => document.location = '/api/v1/auth/google' }
         >
-          {
-            ({
-              isValid,
-              onSubmit,
-            }) => {
-              return (
-                <div className={ classes.buttons }>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    disabled={ loading || !isValid }
-                    onClick={ onSubmit }
-                  >
-                    Login
-                  </Button>
-                </div>
-              )
-            }
-          }
-        </Form>
-        <div className={ classes.footer }>
-          <Typography variant="body1">
-            <Link name="register">Click here</Link> to register an account...
-          </Typography>
-        </div>
+          Login with Google
+        </Button>
       </Paper>
     </div>
   )

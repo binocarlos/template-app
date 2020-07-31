@@ -1,10 +1,15 @@
 const fs = require('fs')
 
 const required_env = [
+  'APP_URL',
   'POSTGRES_USER',
   'POSTGRES_DB',
   'POSTGRES_PASSWORD',
   'JWT_SECRET_KEY',
+  'COOKIE_SECRET',
+  'GOOGLE_CLIENT_ID',
+  'GOOGLE_CLIENT_SECRET',
+  'GOOGLE_APP_ID',
 ]
 
 const decodeBase64_env = [
@@ -30,6 +35,7 @@ const args = require('minimist')(process.argv, {
   default:{
 
     // web server config
+    app_url: process.env.APP_URL,
     port: process.env.PORT || 80,
     base: process.env.BASE || '/api/v1',
 
@@ -45,10 +51,22 @@ const args = require('minimist')(process.argv, {
     // security
     jwt_secret_key: process.env.JWT_SECRET_KEY,
     jwt_expiry: process.env.JWT_EXPIRY || '1h',
+    cookie_secret: process.env.COOKIE_SECRET,
     salt_rounds: process.env.SALT_ROUNDS || 10,
+
+    google_client_id: process.env.GOOGLE_CLIENT_ID,
+    google_client_secret: process.env.GOOGLE_CLIENT_SECRET,
+    google_app_id: process.env.GOOGLE_APP_ID,
+    google_login_redirect: process.env.GOOGLE_LOGIN_REDIRECT || process.env.APP_URL || '/',
+    google_failure_redirect: process.env.GOOGLE_FAILURE_REDIRECT || process.env.APP_URL || '/',
 
   }
 })
+
+args.googleScope = [
+  'https://www.googleapis.com/auth/userinfo.profile',
+  'https://www.googleapis.com/auth/userinfo.email',
+]
 
 const databases = {
   redis: {

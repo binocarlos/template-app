@@ -3,6 +3,7 @@ const pino = require('pino')({
 })
 
 const Knex = require('./database/knex')
+const Redis = require('./database/redis')
 
 const Store = require('./store')
 const Controllers = require('./controllers')
@@ -11,6 +12,8 @@ const settings = require('./settings')
 const App = require('./app')
 
 const knex = Knex(settings.databases.postgres)
+
+const redis = Redis()
 
 const store = Store({
   knex,
@@ -22,6 +25,7 @@ const controllers = Controllers({
 
 const app = App({
   store,
+  redis,
   controllers,
 })
 

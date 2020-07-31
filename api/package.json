@@ -5,7 +5,7 @@
   "description": "api",
   "main": "index.js",
   "scripts": {
-    "preserve": "knex migrate:latest",
+    "migrate": "knex migrate:latest",
     "serve": "node src/index.js",
     "test": "tape test/**/*.test.js | tap-spec",
     "tap-spec": "tap-spec"

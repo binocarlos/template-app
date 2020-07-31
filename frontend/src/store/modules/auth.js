@@ -51,18 +51,18 @@ const sideEffects = {
   authenticate: (token) => async (dispatch, getState) => {
     let user = null
     token = token || localStorage.getItem('token')
-    if(token) {
-      try {
-        user = await handlers.get('/auth/status', null, {
-          headers: getHTTPTokenHeaders(token),
-        })
-      } catch(e) {
+    try {
+      user = await handlers.get('/auth/status', null, {
+        headers: getHTTPTokenHeaders(token),
+      })
+    } catch(e) {
 
-      }
     }
     if(user && user.id) {
-      setToken(token)
-      dispatch(actions.startTokenLoop())
+      if(token) {
+        setToken(token)
+        dispatch(actions.startTokenLoop())
+      }
       dispatch(actions.setUser(user))
     }
     else {
@@ -122,6 +122,7 @@ const sideEffects = {
   }),
 
   logout: () => wrapper('logout', async (dispatch, getState) => {
+    await handlers.post('/auth/logout')
     unsetToken()
     dispatch(actions.setUser(null))
     dispatch(routerActions.navigateTo(ROUTE_LOGGED_OUT))

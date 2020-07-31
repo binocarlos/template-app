@@ -1,23 +1,21 @@
 const up = (knex) => {
   return Promise.all([
-    knex.schema.createTable('item', function(table) {
+    knex.schema.createTable('vmlog', function(table) {
       table.specificType('id', 'serial primary key not null')
       table.specificType('created_at', 'timestamp default now()')
-      table.integer('useraccount')
+      table.integer('vm')
         .references('id')
-        .inTable('useraccount')
+        .inTable('vm')
         .notNullable()
         .onDelete('cascade')
-      table.string('name').notNullable()
-      table.string('type').notNullable()
-      table.json('meta')
+      table.text('text').notNullable()
     })
   ])
 }
 
 const down = (knex) => {
   return Promise.all([
-    knex.schema.dropTable('item')
+    knex.schema.dropTable('vmlog')
   ])
 }
 

@@ -1,5 +1,7 @@
 const Auth = require('./auth')
-const Item = require('./item')
+const Pool = require('./pool')
+const Vm = require('./vm')
+const Lease = require('./lease')
 const Storage = require('./storage')
 
 const Controllers = ({
@@ -14,20 +16,32 @@ const Controllers = ({
     getController,
   })
 
-  const item = Item({
+  const storage = Storage({
     store,
     getController,
   })
 
-  const storage = Storage({
+  const pool = Pool({
+    store,
+    getController,
+  })
+
+  const vm = Vm({
+    store,
+    getController,
+  })
+
+  const lease = Lease({
     store,
     getController,
   })
 
   controllers = {
     auth,
-    item,
     storage,
+    pool,
+    vm,
+    lease,
   }
 
   return controllers

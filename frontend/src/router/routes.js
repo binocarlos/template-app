@@ -34,11 +34,6 @@ const routes = [
     path: '/logout',
   },
   {
-    name: 'register',
-    path: '/register',
-    auth: auth.guest,
-  },
-  {
     name: 'settings',
     path: '/settings',
     auth: auth.user,

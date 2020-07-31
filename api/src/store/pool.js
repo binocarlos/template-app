@@ -1,52 +1,41 @@
-const ItemStore = ({
+const PoolStore = ({
   knex,
 }) => {
  
   const list = ({
-    userid,
+    
   } = {}) => {
-    if(!userid) throw new Error(`userid required for item.list`)
     return knex
       .select()
-      .from('item')
-      .where({
-        useraccount: userid,
-      })
+      .from('pool')
   }
 
   const get = ({
-    userid,
     id,
   } = {}) => {
     if(!id) throw new Error(`id required for item.get`)
-    return knex('item')
+    return knex('pool')
       .where({
-        useraccount: userid,
         id,
       })
       .first()
   }
 
   const create = ({
-    userid,
     data,
   }) => 
-    knex('item')
-      .insert(Object.assign({}, data, {
-        useraccount: userid,
-      }))
+    knex('pool')
+      .insert(data)
       .returning('*')
       .get(0)
 
   const update = ({
     id,
-    userid,
     data,
   } = {}) => {
     if(!id) throw new Error(`id required for item.update`)
-    return knex('item')
-      .where({
-        useraccount: userid,
+    return knex('pool')
+      .where({        
         id,
       })
       .update(data)
@@ -56,12 +45,10 @@ const ItemStore = ({
     
   const del = ({
     id,
-    userid,
   }) => {
     if(!id) throw new Error(`id required for item.delete`)
-    return knex('item')
+    return knex('pool')
       .where({
-        useraccount: userid,
         id,
       })
       .del()
@@ -78,4 +65,4 @@ const ItemStore = ({
   }
 }
 
-module.exports = ItemStore
+module.exports = PoolStore

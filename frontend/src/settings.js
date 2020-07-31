@@ -28,9 +28,6 @@ export const GUEST_MENU = [{
 }, {
   title: 'Login',
   link: 'login',
-}, {
-  title: 'Register',
-  link: 'register',
 }, '-', {
   title: 'Help',
   link: 'help',

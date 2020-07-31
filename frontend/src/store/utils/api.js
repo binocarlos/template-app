@@ -1,9 +1,11 @@
 import axios from 'axios'
 import { API } from 'settings'
 
-export const getHTTPTokenHeaders = token => ({
-  Authorization: token ? `Bearer ${token}` : '',
-})
+export const getHTTPTokenHeaders = token => {
+  return token ? {
+    Authorization: token ? `Bearer ${token}` : '',
+  } : {} 
+}
 
 export const setHTTPToken = token => {
   axios.defaults.headers.common = getHTTPTokenHeaders(token)

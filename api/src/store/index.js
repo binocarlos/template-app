@@ -1,5 +1,7 @@
 const Auth = require('./auth')
-const Item = require('./item')
+const Pool = require('./pool')
+const Vm = require('./vm')
+const Lease = require('./lease')
 
 const Store = ({
   knex,
@@ -8,14 +10,24 @@ const Store = ({
     knex,
   })
 
-  const item = Item({
+  const pool = Pool({
+    knex,
+  })
+
+  const vm = Vm({
+    knex,
+  })
+
+  const lease = Lease({
     knex,
   })
 
   return {
     knex,
     auth,
-    item,
+    pool,
+    vm,
+    lease,
   }
 }
 

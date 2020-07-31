@@ -8,20 +8,18 @@ const pino = require('pino')({
 })
 
 const App = ({
+  store,
+  redis,
   controllers,
 }) => {
 
   const app = express()
 
-  app.get('/k8s-probe', (req, res, next) => {
-    res.json({ok: true})
-  })
-
-  const apiHandler = ApiRoutes({
+  app.use(settings.base, ApiRoutes({
+    store,
+    redis,
     controllers,
-  })
-
-  app.use(settings.base, apiHandler)
+  }))
 
   app.use((req, res, next) => {
     res.status(res._code || 404)

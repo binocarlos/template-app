@@ -1,35 +1,31 @@
 const asyncHandler = require('express-async-handler')
 
-const ItemRoutes = ({
+const PoolRoutes = ({
   controllers,
 }) => {
 
   const list = async (req, res) => {
-    const result = await controllers.item.list({
-      userid: req.user.id,
-    })
+    const result = await controllers.pool.list()
     res.json(result)
   }
 
   const get = async (req, res) => {
-    const result = await controllers.item.get({
-      userid: req.user.id,
+    const result = await controllers.pool.get({
       id: req.params.id
     })
     res.json(result)
   }
 
   const create = async (req, res) => {
-    const result = await controllers.item.create({
-      userid: req.user.id,
+    const result = await controllers.pool.create({
       data: req.body,
     })
+    res.status(201)
     res.json(result)
   }
 
   const update = async (req, res) => {
-    const result = await controllers.item.update({
-      userid: req.user.id,
+    const result = await controllers.pool.update({
       id: req.params.id,
       data: req.body,
     })
@@ -37,8 +33,7 @@ const ItemRoutes = ({
   }
 
   const del = async (req, res) => {
-    const result = await controllers.item.delete({
-      userid: req.user.id,
+    const result = await controllers.pool.delete({
       id: req.params.id,
     })
     res.json(result)
@@ -53,4 +48,4 @@ const ItemRoutes = ({
   }
 }
 
-module.exports = ItemRoutes
+module.exports = PoolRoutes
