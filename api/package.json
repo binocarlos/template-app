@@ -19,7 +19,7 @@
     "connect-redis": "4.0.3",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.5",
-    "dotty": "^0.1.0",
+    "dotty": "^0.1.2",
     "express": "^4.15.3",
     "express-async-handler": "^1.1.4",
     "express-pino-logger": "4.0.0",
