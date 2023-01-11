@@ -25,7 +25,7 @@
     "express-pino-logger": "4.0.0",
     "express-session": "^1.14.2",
     "ioredis": "4.14.1",
-    "knex": "0.20.2",
+    "knex": "2.4.0",
     "mime-types": "^2.1.27",
     "passport": "0.4.0",
     "passport-google-oauth": "2.0.0",
